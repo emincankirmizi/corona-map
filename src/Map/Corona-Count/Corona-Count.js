@@ -3153,13 +3153,15 @@ export default class CoronaCount extends React.Component {
             openInfo: false,
             choosenCountry: [],
             newCases: [],
-            openNewCases: false
+            openNewCases: false,
+            isMobile: false
         }
     }
 
     componentDidMount() {
         if (!("Notification" in window)) {
-            alert("This browser does not support desktop notification");
+            this.setState({ isMobile: true });
+            alert("Bu cihaz bilgilendirmelere izin vermiyor.");
         }
         fetch('https://coronavirus-19-api.herokuapp.com/countries')
             .then(response => response.json())
@@ -3218,8 +3220,10 @@ export default class CoronaCount extends React.Component {
             if (newCasesArray.length !== 0) {
                 this.setState({ newCases: newCasesArray });
                 this.setState({ openNewCases: true });
-                if (Notification.permission === "granted") {
-                    new Notification("Yeni gelişmeler var.");
+                if (!this.state.isMobile) {
+                    if (Notification.permission === "granted") {
+                        new Notification("Yeni gelişmeler var.");
+                    }
                 }
                 document.getElementsByClassName('newCases')[0].style.display = 'block';
             }
@@ -3340,7 +3344,7 @@ export default class CoronaCount extends React.Component {
                     </div>
                     {this.state.newCases.map((cases, index) => (
                         <div className="descCases" key={index}>
-                            <p style={{ color: cases.case === 0 ? 'white' : cases.case === 1 ? '#C81313' : '#43BA1F'  }}>{cases.text}</p>
+                            <p style={{ color: cases.case === 0 ? 'white' : cases.case === 1 ? '#C81313' : '#43BA1F' }}>{cases.text}</p>
                         </div>
                     ))}
                 </div>
