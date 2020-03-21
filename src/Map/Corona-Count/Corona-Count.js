@@ -3162,6 +3162,13 @@ export default class CoronaCount extends React.Component {
         if (!("Notification" in window)) {
             this.setState({ isMobile: true });
             alert("Bu cihaz bilgilendirmelere izin vermiyor.");
+        } else if (Notification.permission !== 'denied' || Notification.permission === "default") {
+            Notification.requestPermission(function (permission) {
+                // If the user accepts, let's create a notification
+                // if (permission === "granted") {
+                //     var notification = new Notification("Hi there!");
+                // }
+            });
         }
         fetch('https://coronavirus-19-api.herokuapp.com/countries')
             .then(response => response.json())
@@ -3176,6 +3183,7 @@ export default class CoronaCount extends React.Component {
             fetch('https://coronavirus-19-api.herokuapp.com/all')
                 .then(response => response.json())
                 .then(data => { this.setAllData(data) });
+            console.log('geldi');
         }, 300000);
         if (window.innerWidth > 600) {
             document.getElementById("panel").style.display = "block";
@@ -3198,22 +3206,22 @@ export default class CoronaCount extends React.Component {
         if (this.state.totalCountryCorona.length !== 0) {
             const newCasesArray = [];
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
-                if (this.state.totalCountryCorona[i].cases !== data[i].cases) {
+                if (this.state.totalCountryCorona[i].cases < data[i].cases) {
                     newCasesArray.push({
                         "text": `${data[i].country} yeni vaka(lar) açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].cases} Yeni sayı: ${data[i].cases}`,
                         "case": 0
                     });
                 }
-                if (this.state.totalCountryCorona[i].deaths !== data[i].deaths) {
+                if (this.state.totalCountryCorona[i].deaths < data[i].deaths) {
                     newCasesArray.push({
                         "text": `${data[i].country} yeni kayıpları açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].deaths} Yeni sayı: ${data[i].deaths}`,
                         "case": 1
                     });
                 }
-                if (this.state.totalCountryCorona[i].recovered !== data[i].recovered) {
+                if (this.state.totalCountryCorona[i].recovered < data[i].recovered) {
                     newCasesArray.push({
                         "text": `${data[i].country} yeni iyileşen vakaları açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].recovered} Yeni sayı: ${data[i].recovered}`,
-                        "case": 1
+                        "case": 2
                     });
                 }
             }
@@ -3247,7 +3255,7 @@ export default class CoronaCount extends React.Component {
                 const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country)
                 if (aa) {
                     const countStyle = {
-                        "color": aa.cases > 30000 ? '#b30000' : aa.cases > 10000 ? '#cc0000' : aa.cases > 5000 ? '#e60000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff1a1a' : aa.cases > 100 ? '#BA4A00' : '#ff4000',
+                        "color": aa.cases > 30000 ? '#b30000' : aa.cases > 10000 ? '#cc0000' : aa.cases > 5000 ? '#e60000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#D35400' : aa.cases > 100 ? '#953D03' : '#ff4000',
                         "weight": 0.1,
                         "opacity": 0.65
                     };
@@ -3344,7 +3352,7 @@ export default class CoronaCount extends React.Component {
                     </div>
                     {this.state.newCases.map((cases, index) => (
                         <div className="descCases" key={index}>
-                            <p style={{ color: cases.case === 0 ? 'white' : cases.case === 1 ? '#C81313' : '#43BA1F' }}>{cases.text}</p>
+                            <p style={{ color: cases.case === 0 ? 'white' : cases.case === 1 ? '#C81313' : cases.case === 2 ? '#43BA1F' : "black" }}>{cases.text}</p>
                         </div>
                     ))}
                 </div>
