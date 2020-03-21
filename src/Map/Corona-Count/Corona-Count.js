@@ -3208,7 +3208,7 @@ export default class CoronaCount extends React.Component {
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
                 if (this.state.totalCountryCorona[i].cases < data[i].cases) {
                     newCasesArray.push({
-                        "text": `${data[i].country} yeni vaka(lar) açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].cases} Yeni sayı: ${data[i].cases}`,
+                        "text": `${data[i].country} yeni vakalar açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].cases} Yeni sayı: ${data[i].cases}`,
                         "case": 0
                     });
                 }
@@ -3293,8 +3293,26 @@ export default class CoronaCount extends React.Component {
         document.getElementsByClassName('hamburger')[0].classList.toggle('change');
         if (document.getElementById("panel").style.display === "none") {
             document.getElementById("panel").style.display = "block";
+            if (window.innerWidth > 600) {
+                document.getElementsByClassName("infoPanel")[0].style.left = "350px";
+                document.getElementsByClassName("infoPanel")[0].style.top = "0px";
+            } else {
+                document.getElementsByClassName("infoPanel")[0].style.width = "90%";
+                document.getElementsByClassName("infoPanel")[0].style.left = "5%";
+                document.getElementsByClassName("infoPanel")[0].style.top = "15px";
+                document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
+            }
+
         } else {
             document.getElementById("panel").style.display = "none";
+            if (document.getElementsByClassName('infoPanel')[0].style.display !== "none") {
+                if (window.innerWidth < 600) {
+                    document.getElementsByClassName('infoPanel')[0].style.display = "none"
+                } else {
+                    document.getElementsByClassName("infoPanel")[0].style.left = "0px";
+                    document.getElementsByClassName("infoPanel")[0].style.top = "40px";
+                }
+            }
         }
     }
 
