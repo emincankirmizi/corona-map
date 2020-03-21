@@ -1,0 +1,37 @@
+.legend {
+    width: 150px;
+    position: relative;
+    float: right;
+    z-index: 9000;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    transition: 0.5s;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    color: white;
+    border-radius: 5%;
+  }
+
+  .legTitle {
+    text-align: center;
+    color: #007bff;
+  }
+
+  .dot {
+    margin-left: 20px;
+    margin-top: 10px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  @media only screen and (max-width: 840px) {
+    .legend {
+      display: none;
+    }
+  }
