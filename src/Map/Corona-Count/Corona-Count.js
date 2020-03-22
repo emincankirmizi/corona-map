@@ -3289,7 +3289,7 @@ export default class CoronaCount extends React.Component {
                         onEachFeature: (f, l) => {
                             l.bindPopup(`
                             <b>${aa.country}</b><br>
-                            <b>Aktif:${aa.cases}</b><br>
+                            <b>Aktif:${aa.active}</b><br>
                             <b>Ölüm:${aa.deaths}</b><br>
                             <b>İyileşen:${aa.recovered}</b><br>
                             `);
