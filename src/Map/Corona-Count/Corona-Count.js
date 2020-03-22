@@ -3250,14 +3250,39 @@ export default class CoronaCount extends React.Component {
                 this.props.map.removeLayer(layer);
             }
         });
+        for (let i = 0; i < data[0].features.length; i++) {
+            let coronaExist = false;
+            for (let y = 0; y < this.state.totalCountryCorona.length; y++) {
+                if (data[0].features[i].properties.name === this.state.totalCountryCorona[y].country) {
+                    coronaExist = true;
+                }
+            }
+            if (!coronaExist) {
+                const aa = data[0].features[i];
+                const countStyle = {
+                    "color": '#ffffff',
+                    "weight": 0.1,
+                    "opacity": 0.55
+                };
+                L.geoJSON(aa, {
+                    style: countStyle,
+                    onEachFeature: (f, l) => {
+                        l.bindPopup(`
+                        <b>${aa.properties.name}</b><br>
+                        <b>Vaka yok.</b><br>
+                        `);
+                    }
+                }).addTo(this.props.map);
+            }
+        }
         data[0].features.filter(
             o => {
-                const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country)
+                const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country);
                 if (aa) {
                     const countStyle = {
-                        "color": aa.cases > 30000 ? '#b30000' : aa.cases > 10000 ? '#cc0000' : aa.cases > 5000 ? '#e60000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#D35400' : aa.cases > 100 ? '#953D03' : '#ff4000',
+                        "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
                         "weight": 0.1,
-                        "opacity": 0.65
+                        "opacity": 0.55
                     };
                     L.geoJSON(o, {
                         style: countStyle,
@@ -3322,6 +3347,8 @@ export default class CoronaCount extends React.Component {
                 <div id="panel">
                     <div className="all">
                         <a href="https://hsgm.saglik.gov.tr/tr/covid19" target="window.open()"><h1>Covid-19</h1></a>
+                        <a href="https://tr.linkedin.com/in/emin-can-kirmizi-b14398144" target="window.open()"><p>Emin Can Kırmızı tarafından yapıldı.</p></a>
+                        <a href="https://coronavirus-19-api.herokuapp.com/countries" target="window.open()"><p>Covid-19-API</p></a>
                         <h5>Toplam Vaka: {this.state.totalCorona.cases}</h5>
                         <h5>Toplam Ölüm: {this.state.totalCorona.deaths}</h5>
                         <h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
