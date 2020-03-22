@@ -64,6 +64,7 @@
   }
 
   .all {
+      margin-top: 7px;
       margin-bottom: 25px;
       font: caption;
       text-align: center;
@@ -183,7 +184,8 @@
   .infoPanel {
    width: 90%;
    left: 5%;
-   top: 15px;
+   top: 41px;
+   height: 382px;
    border-radius: 5px;
   }
 }
