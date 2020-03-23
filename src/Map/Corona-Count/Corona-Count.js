@@ -3374,7 +3374,7 @@ export default class CoronaCount extends React.Component {
                     <div className="countries">
                         {this.state.totalCountryCorona.filter(e => {
                             if (this.state.message) {
-                                return e.country.toLowerCase().includes(this.state.message);
+                                return e.country.toLowerCase().includes(this.state.message.toLowerCase());
                             } else {
                                 return e;
                             }
