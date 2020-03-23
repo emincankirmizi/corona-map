@@ -23,7 +23,7 @@ export default class Map extends React.Component {
         fetch(`https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?iso2=${this.props.choosen}&onlyCountries=false`)
             .then(response => response.json())
             .then(data => {
-                if (data[0].timeseries) {
+                if (data[0] && data[0].timeseries) {
                     const newArray = Object.keys(data[0].timeseries);
                     const deaths = [];
                     const recovered = [];
