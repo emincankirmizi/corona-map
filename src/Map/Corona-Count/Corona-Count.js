@@ -3209,19 +3209,19 @@ export default class CoronaCount extends React.Component {
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
                 if (this.state.totalCountryCorona[i].cases < data[i].cases) {
                     newCasesArray.push({
-                        "text": `${data[i].country} yeni vakalar açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].cases} Yeni sayı: ${data[i].cases}`,
+                        "text": `${data[i].country} yeni vakalar açıkladı.Yeni sayı: ${data[i].cases}`,
                         "case": 0
                     });
                 }
                 if (this.state.totalCountryCorona[i].deaths < data[i].deaths) {
                     newCasesArray.push({
-                        "text": `${data[i].country} yeni kayıpları açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].deaths} Yeni sayı: ${data[i].deaths}`,
+                        "text": `${data[i].country} yeni kayıpları açıkladı. Yeni sayı: ${data[i].deaths}`,
                         "case": 1
                     });
                 }
                 if (this.state.totalCountryCorona[i].recovered < data[i].recovered) {
                     newCasesArray.push({
-                        "text": `${data[i].country} yeni iyileşen vakaları açıkladı. Eski sayı: ${this.state.totalCountryCorona[i].recovered} Yeni sayı: ${data[i].recovered}`,
+                        "text": `${data[i].country} yeni iyileşen vakaları açıkladı. Yeni sayı: ${data[i].recovered}`,
                         "case": 2
                     });
                 }
