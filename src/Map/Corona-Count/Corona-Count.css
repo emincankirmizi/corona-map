@@ -14,21 +14,22 @@
   }
 
   .infoPanel {
-    height: 30%;
-    width: 350px;
+    height: 688px;
+    width: 520px;
     position: fixed;
     z-index: 9999;
     top: 0;
-    left: 350px;
+    left: 351px;
     background-color: rgb(72, 126, 126);
     transition: 0.5s;
     overflow-x: auto;
     color: white;
+    background-color: black;
   }
 
   .infoPanelTitle {
     padding-top: 25px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     padding-left: 4%;
     background-color: black;
     width: 100%;
@@ -176,23 +177,34 @@
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 880px) {
   #panel {
     width: 100%;
   }
 
   .infoPanel {
-   width: 90%;
-   left: 5%;
-   top: 41px;
-   height: 382px;
+   width: 100%;
+   left: 0px;
+   top: 0px;
+   height: 100%;
    border-radius: 5px;
   }
 }
+
+  .search-box {
+    text-align: center;
+    margin-bottom: 5%;
+  }
 
 @media only screen and (max-width: 718px) {
   .newCases {
     width: 90%;
     left: 5%;
+  }
+}
+
+@media only screen and (max-height: 690px) {
+  .infoPanel {
+    height: 90%;
   }
 }

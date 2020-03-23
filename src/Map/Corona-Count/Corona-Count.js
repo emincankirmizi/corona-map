@@ -1,7 +1,9 @@
 import React from 'react';
 import './Corona-Count.css';
 import L from 'leaflet';
-import data from '../coords/coords.json'
+import data from '../coords/coords.json';
+import LineChart from '../../Map/LineChart/LineChart';
+
 export default class CoronaCount extends React.Component {
 
     constructor(props) {
@@ -3154,8 +3156,11 @@ export default class CoronaCount extends React.Component {
             choosenCountry: [],
             newCases: [],
             openNewCases: false,
-            isMobile: false
+            isMobile: false,
+            showLineChart: false,
+            message: null
         }
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -3164,10 +3169,6 @@ export default class CoronaCount extends React.Component {
             alert("Bu cihaz bilgilendirmelere izin vermiyor.");
         } else if (Notification.permission !== 'denied' || Notification.permission === "default") {
             Notification.requestPermission(function (permission) {
-                // If the user accepts, let's create a notification
-                // if (permission === "granted") {
-                //     var notification = new Notification("Hi there!");
-                // }
             });
         }
         fetch('https://coronavirus-19-api.herokuapp.com/countries')
@@ -3301,15 +3302,21 @@ export default class CoronaCount extends React.Component {
     }
 
     chooseCountry(country) {
+        this.setState({ showLineChart: false });
+        document.getElementsByClassName('infoPanel')[0].style.display = 'none';
         this.choosenCou = this.state.countries.filter(
             c => c.name === country.country
         )
         this.setState({ choosenCountry: country });
         if (this.choosenCou[0] && this.choosenCou[0].latlng) {
             this.props.map.setView(this.choosenCou[0].latlng, 6);
+            setTimeout(() => {
+                this.setState({ showLineChart: true });
+            }, 1);
         }
         document.getElementsByClassName('infoPanel')[0].style.display = 'block';
         this.props.map.on('click', (e) => {
+            this.setState({ showLineChart: false });
             document.getElementsByClassName('infoPanel')[0].style.display = 'none';
         });
     }
@@ -3319,7 +3326,7 @@ export default class CoronaCount extends React.Component {
         if (document.getElementById("panel").style.display === "none") {
             document.getElementById("panel").style.display = "block";
             if (window.innerWidth > 600) {
-                document.getElementsByClassName("infoPanel")[0].style.left = "350px";
+                document.getElementsByClassName("infoPanel")[0].style.left = "351px";
                 document.getElementsByClassName("infoPanel")[0].style.top = "0px";
             } else {
                 document.getElementsByClassName("infoPanel")[0].style.width = "90%";
@@ -3341,6 +3348,14 @@ export default class CoronaCount extends React.Component {
         }
     }
 
+    handleChange(e) {
+        console.log(e.target.value);
+        this.setState({
+            message: e.target.value
+        });
+    };
+
+
     render() {
         return (
             <div>
@@ -3353,8 +3368,17 @@ export default class CoronaCount extends React.Component {
                         <h5>Toplam Ölüm: {this.state.totalCorona.deaths}</h5>
                         <h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
                     </div>
+                    <div id="searchBox" className="search-box">
+                        <input type="text" placeholder="Ülke adı girin..." maxLength="7" onChange={this.handleChange}></input>
+                    </div>
                     <div className="countries">
-                        {this.state.totalCountryCorona.map(country => (
+                        {this.state.totalCountryCorona.filter(e => {
+                            if (this.state.message) {
+                                return e.country.toLowerCase().includes(this.state.message);
+                            } else {
+                                return e;
+                            }
+                        }).map(country => (
                             <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
                                 <h5>{country.country}</h5>
                                 <div className="title">
@@ -3380,7 +3404,7 @@ export default class CoronaCount extends React.Component {
                     <div className="infoPanelTitle">
                         <h5>{this.state.choosenCountry.country}</h5>
                     </div>
-                    <div className="infoPanelContent">
+                    <div id="inforPanelContent" className="infoPanelContent">
                         <p>Vaka: {this.state.choosenCountry.cases}</p>
                         <p>Bugün: {this.state.choosenCountry.todayCases}</p>
                         <p>Ölüm: {this.state.choosenCountry.deaths}</p>
@@ -3388,6 +3412,9 @@ export default class CoronaCount extends React.Component {
                         <p>Durumu Kritik: {this.state.choosenCountry.critical}</p>
                         <p>Aktif: {this.state.choosenCountry.active}</p>
                         <p>Bir Milyonda: {this.state.choosenCountry.casesPerOneMillion} kişi</p>
+                    </div>
+                    <div id="dashboardContent" >
+                        {this.state.showLineChart ? <LineChart choosen={this.choosenCou[0].country_code}></LineChart> : null}
                     </div>
                 </div>
                 <div className="newCases" style={{ display: this.state.openNewCases ? 'block' : 'none' }}>

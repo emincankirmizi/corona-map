@@ -1,0 +1,13 @@
+.dashoardArea {
+    position: relative;
+    z-index: 9999;
+    background-color: #111;
+    transition: 0.5s;
+    color: white;
+    overflow-y: hidden;
+    background-color: rgb(15, 14, 14);;
+}
+
+.mixed-chart {
+    color: black;
+}
