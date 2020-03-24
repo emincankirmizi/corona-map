@@ -28,6 +28,7 @@
   }
 
   .infoPanelTitle {
+    position: fixed;
     padding-top: 25px;
     padding-bottom: 0px;
     padding-left: 4%;
@@ -139,6 +140,7 @@
   position: fixed;
   cursor: pointer;
   float: right;
+  z-index: 9999;
 }
 
 .closeNewPanel{
