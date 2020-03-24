@@ -74,7 +74,7 @@ export default class Map extends React.Component {
                             options={this.state.options}
                             series={this.state.series}
                             type="line"
-                            width="500"
+                            width="100%"
                         />
                     </div>
                 </div>
