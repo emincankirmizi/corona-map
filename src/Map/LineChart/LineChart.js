@@ -58,7 +58,7 @@ export default class Map extends React.Component {
                             xaxis: {
                                 categories: xAxis
                             },
-                            colors: ["#FFFFFF", "#E61904", "#04D816"],
+                            colors: ["#0483D8", "#E61904", "#04D816"],
                             stroke: {
                                 width: 4
                               },
