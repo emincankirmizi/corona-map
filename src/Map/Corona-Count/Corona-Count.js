@@ -3184,7 +3184,6 @@ export default class CoronaCount extends React.Component {
             fetch('https://coronavirus-19-api.herokuapp.com/all')
                 .then(response => response.json())
                 .then(data => { this.setAllData(data) });
-            console.log('geldi');
         }, 300000);
         if (window.innerWidth > 600) {
             document.getElementById("panel").style.display = "block";
@@ -3349,7 +3348,6 @@ export default class CoronaCount extends React.Component {
     }
 
     handleChange(e) {
-        console.log(e.target.value);
         this.setState({
             message: e.target.value
         });

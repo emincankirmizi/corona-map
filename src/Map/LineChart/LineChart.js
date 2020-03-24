@@ -19,7 +19,6 @@ export default class Map extends React.Component {
     }
 
     fetchAndSet() {
-        console.log(this.props.choosen);
         fetch(`https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?iso2=${this.props.choosen}&onlyCountries=false`)
             .then(response => response.json())
             .then(data => {
