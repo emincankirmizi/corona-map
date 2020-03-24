@@ -29,11 +29,11 @@
 
   .infoPanelTitle {
     position: fixed;
+    width: 520px;
     padding-top: 25px;
     padding-bottom: 0px;
     padding-left: 4%;
     background-color: black;
-    width: 100%;
   }
 
   .infoPanelContent {
@@ -195,6 +195,10 @@
 
   .infoPanelContent {
     margin-top: 15%;
+  }
+
+  .infoPanelTitle {
+    width: 90%;
   }
 
   .dashoardArea {

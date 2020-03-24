@@ -3172,14 +3172,14 @@ export default class CoronaCount extends React.Component {
             });
         }
         fetch('https://coronavirus-19-api.herokuapp.com/countries')
-            .then(response => response.json())
+            .then(response => this._parseJSON(response))
             .then(data => { this.setCountryData(data) });
         fetch('https://coronavirus-19-api.herokuapp.com/all')
-            .then(response => response.json())
+            .then(response => this._parseJSON(response))
             .then(data => { this.setAllData(data) });
         setInterval(() => {
             fetch('https://coronavirus-19-api.herokuapp.com/countries')
-                .then(response => response.json())
+                .then(response => this._parseJSON(response))
                 .then(data => { this.setCountryData(data) });
             fetch('https://coronavirus-19-api.herokuapp.com/all')
                 .then(response => response.json())
@@ -3202,7 +3202,17 @@ export default class CoronaCount extends React.Component {
         });
     }
 
+    _parseJSON(response) {
+        return response.text().then(function (text) {
+            return text ? JSON.parse(text) : {}
+        })
+    }
+
+
     setCountryData(data) {
+        if (data.length === 0) {
+            return;
+        }
         if (this.state.totalCountryCorona.length !== 0) {
             const newCasesArray = [];
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
@@ -3241,6 +3251,9 @@ export default class CoronaCount extends React.Component {
     }
 
     setAllData(data) {
+        if (data.length === 0) {
+            return;
+        }
         this.setState({ totalCorona: data })
     }
 
