@@ -37,6 +37,7 @@
   }
 
   .infoPanelContent {
+    margin-top: 10%;
     padding-top: 15px;
     padding-bottom: 10px;
     padding-left: 10%;
@@ -190,6 +191,10 @@
    top: 0px;
    height: 80%;
    border-radius: 5px;
+  }
+
+  .infoPanelContent {
+    margin-top: 15%;
   }
 
   .dashoardArea {
