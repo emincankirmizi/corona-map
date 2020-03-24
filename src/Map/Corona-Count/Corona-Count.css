@@ -209,6 +209,6 @@
 
 @media only screen and (max-height: 690px) {
   .infoPanel {
-    height: 90%;
+    height: 100%;
   }
 }

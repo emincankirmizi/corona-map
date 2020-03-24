@@ -39,11 +39,11 @@ export default class Map extends React.Component {
                     this.setState({
                         series: [{
                             name: "Vaka",
-                            data: total
+                            data: total,
                         },
                         {
                             name: "Ölüm",
-                            data: deaths
+                            data: deaths,
                         },
                         {
                             name: "İyileşme",
@@ -57,7 +57,8 @@ export default class Map extends React.Component {
                             },
                             xaxis: {
                                 categories: xAxis
-                            }
+                            },
+                            colors: ["#0483D8", "#E61904", "#04D816"]
                         }
                     })
                 }
