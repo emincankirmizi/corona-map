@@ -3404,7 +3404,8 @@ export default class CoronaCount extends React.Component {
                     </div>
                     <div id="inforPanelContent" className="infoPanelContent">
                         <p>Vaka: {this.state.choosenCountry.cases}</p>
-                        <p>Bugün: {this.state.choosenCountry.todayCases}</p>
+                        <p>Bugünkü Vakalar: {this.state.choosenCountry.todayCases}</p>
+                        <p>Bugünkü Ölümler: {this.state.choosenCountry.todayDeaths}</p>
                         <p>Ölüm: {this.state.choosenCountry.deaths}</p>
                         <p>İyileşen: {this.state.choosenCountry.recovered}</p>
                         <p>Durumu Kritik: {this.state.choosenCountry.critical}</p>
@@ -3414,6 +3415,7 @@ export default class CoronaCount extends React.Component {
                     <div id="dashboardContent" >
                         {this.state.showLineChart ? <LineChart choosen={this.choosenCou[0].country_code}></LineChart> : null}
                     </div>
+                    <p style={{ textAlign: "center", color: "#66a8ff" }}>Grafik Veri Sağlayıcısı: Johns Hopkins University</p>
                 </div>
                 <div className="newCases" style={{ display: this.state.openNewCases ? 'block' : 'none' }}>
                     <span className="closeNewPanel">&times;</span>
