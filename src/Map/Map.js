@@ -12,9 +12,9 @@ const Wrapper = styled.div`
 export default class Map extends React.Component {
 
     setMap() {
-        const bounds = new L.LatLngBounds(new L.LatLng(-360, -180), new L.LatLng(360, 180));
+        const bounds = new L.LatLngBounds(new L.LatLng(-400, -350), new L.LatLng(400, 350));
         this.map = L.map('map', {
-            center: [22.412109, 48.283193],
+            center: [39, 35],
             zoom: 3,
             maxBounds: bounds,
             maxBoundsViscosity: 0.3,

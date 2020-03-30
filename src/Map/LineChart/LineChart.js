@@ -29,7 +29,6 @@ export default class Map extends React.Component {
 
     componentDidMount() {
         this.fetchAndSet();
-        console.log(this.props.graphicId);
     }
 
     fetchAndSet() {
@@ -110,6 +109,15 @@ export default class Map extends React.Component {
                             colors: ["#0483D8", "#E61904", "#04D816"],
                             stroke: {
                                 width: 4
+                            },
+                            title: {
+                                text: "Genel Durum",
+                                align: 'left',
+                                offsetX: 20,
+                                offsetY: 5,
+                                style: {
+                                    color: '#66a8ff'
+                                }
                             }
                         }
                     })
@@ -141,6 +149,15 @@ export default class Map extends React.Component {
                                     stops: [0, 100]
                                 }
                             },
+                            title: {
+                                text: "Günlük Ölüm",
+                                align: 'left',
+                                offsetX: 20,
+                                offsetY: 5,
+                                style: {
+                                    color: '#66a8ff'
+                                }
+                            }
                         }
                     })
                     this.setState({
@@ -171,6 +188,15 @@ export default class Map extends React.Component {
                                     stops: [0, 100]
                                 }
                             },
+                            title: {
+                                text: "Günlük İyileşen",
+                                align: 'left',
+                                offsetX: 20,
+                                offsetY: 5,
+                                style: {
+                                    color: '#66a8ff'
+                                }
+                            }
                         }
                     })
                     this.setState({
@@ -200,6 +226,15 @@ export default class Map extends React.Component {
                                     stops: [0, 100]
                                 }
                             },
+                            title: {
+                                text: "Günlük Vaka",
+                                align: 'left',
+                                offsetX: 20,
+                                offsetY: 5,
+                                style: {
+                                    color: '#66a8ff'
+                                }
+                            }
                         }
                     })
                 }

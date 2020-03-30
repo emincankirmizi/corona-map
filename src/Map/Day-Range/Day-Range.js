@@ -178,7 +178,7 @@ export default class DayRange extends React.Component {
             <div id="dayRange">
                 <div>
                     <h3>{this.state.newDay}</h3>
-                    {this.state.isDayNull ? <p style={{ color: "red" }} >Seçili güne ait veri bulunmadı.</p> : null}
+                    {this.state.isDayNull ? <p style={{ color: "red" }} >Seçili güne ait veri bulunamadı.</p> : null}
                 </div>
                 <input type="range" min="0" max={this.state.totalDays} className="slider" id="daySlider" onChange={this.handleChange}></input>
             </div>

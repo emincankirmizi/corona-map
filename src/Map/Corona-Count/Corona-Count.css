@@ -14,7 +14,7 @@
   }
 
   .infoPanel {
-    height: 688px;
+    height: 85%;
     width: 520px;
     position: fixed;
     z-index: 9999;
