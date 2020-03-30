@@ -13,7 +13,8 @@ export default class DayRange extends React.Component {
             totalToday: [],
             newDay: null,
             today: null,
-            isToday: true
+            isToday: true,
+            isDayNull: false,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -109,21 +110,24 @@ export default class DayRange extends React.Component {
                 }
                 newDayCountries.forEach(e => {
                     if (e.country === country.countryregion) {
-                        e.cases = e.cases + (country.timeseries[newDay].confirmed ? country.timeseries[newDay].confirmed : 0);
-                        e.deaths = e.deaths + country.timeseries[newDay].deaths;
-                        e.recovered = e.recovered + country.timeseries[newDay].recovered;
+                        if (country.timeseries[newDay]) {
+                            e.cases = e.cases + (country.timeseries[newDay].confirmed ? country.timeseries[newDay].confirmed : 0);
+                            e.deaths = e.deaths + country.timeseries[newDay].deaths;
+                            e.recovered = e.recovered + country.timeseries[newDay].recovered;
+                        }
                         same = true;
                     }
                 });
                 if (!same) {
+                    this.setState({ isDayNull: country.timeseries[newDay] ? false : true });
                     newDayCountries.push(
                         {
                             "country": country.countryregion,
-                            "cases": country.timeseries[newDay].confirmed,
+                            "cases": country.timeseries[newDay] ? country.timeseries[newDay].confirmed : 0,
                             "todayCases": null,
-                            "deaths": country.timeseries[newDay].deaths,
+                            "deaths": country.timeseries[newDay] ? country.timeseries[newDay].deaths : 0,
                             "todayDeaths": null,
-                            "recovered": country.timeseries[newDay].recovered,
+                            "recovered": country.timeseries[newDay] ? country.timeseries[newDay].recovered : 0,
                             "active": null,
                             "critical": null,
                             "casesPerOneMillion": null,
@@ -148,6 +152,7 @@ export default class DayRange extends React.Component {
                 recovered: totalRecovered
             });
         } else {
+            this.setState({isDayNull: false});
             this.sort_by_key(this.state.allCountriesToday, 'cases');
             this.props.onDaySet(this.state.allCountriesToday);
             this.props.onAllData(this.state.totalToday);
@@ -173,6 +178,7 @@ export default class DayRange extends React.Component {
             <div id="dayRange">
                 <div>
                     <h3>{this.state.newDay}</h3>
+                    {this.state.isDayNull ? <p style={{ color: "red" }} >Seçili güne ait veri bulunmadı.</p> : null}
                 </div>
                 <input type="range" min="0" max={this.state.totalDays} className="slider" id="daySlider" onChange={this.handleChange}></input>
             </div>
