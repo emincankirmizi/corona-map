@@ -1,0 +1,181 @@
+import React from 'react';
+import './Day-Range.css';
+
+export default class DayRange extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            totalDays: null,
+            startDate: null,
+            allCountries: [],
+            allCountriesToday: [],
+            totalToday: [],
+            newDay: null,
+            today: null,
+            isToday: true
+        }
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    UNSAFE_componentWillMount() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+        this.setState({
+            today: {
+                mm: mm,
+                dd: dd
+            }
+        })
+
+        this.setState({ newDay: `${dd}/${mm}/20` })
+        const endDate = Date.parse(`${yyyy}-${mm}-${dd}`);
+        const startDate = Date.parse("2020-01-22");
+        this.setState({ startDate: startDate });
+        const timeDiff = endDate - startDate;
+        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        this.setState({ totalDays: daysDiff });
+        fetch(`https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ allCountries: data }, () => {
+                    document.getElementById("rangeDiv").style.display = "block";
+                    document.getElementById("resWait").style.display = "none";
+                    document.getElementsByClassName("loader")[0].style.display = "none";
+                    document.getElementById("daySlider").value = this.state.totalDays;
+                });
+            });
+        fetch('https://coronavirus-19-api.herokuapp.com/countries')
+            .then(response => this._parseJSON(response))
+            .then(data => { this.setState({ allCountriesToday: data }, () => { this.setNewDayCountries(false); }) });
+        fetch('https://coronavirus-19-api.herokuapp.com/all')
+            .then(response => this._parseJSON(response))
+            .then(data => { this.setState({ totalToday: data }, () => { this.props.onAllData(data); }) });
+        setInterval(() => {
+            if (this.state.isToday) {
+                fetch('https://coronavirus-19-api.herokuapp.com/countries')
+                    .then(response => this._parseJSON(response))
+                    .then(data => { this.setState({ allCountriesToday: data }, () => { this.setNewDayCountries(false); }) });
+                fetch('https://coronavirus-19-api.herokuapp.com/all')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.setState({ allCountriesToday: data }, () => { this.props.onAllData(data); })
+                    });
+            }
+        }, 300000);
+    }
+
+    componentDidMount() {
+        if (this.state.allCountries.length === 0) {
+            document.getElementById("rangeDiv").style.display = "none";
+            document.getElementsByClassName("loader")[0].style.display = "block";
+            document.getElementById("resWait").style.display = "block";
+        }
+    }
+
+    handleChange(e) {
+        const last = new Date(this.state.startDate + (e.target.value * 24 * 60 * 60 * 1000));
+        const day = last.getDate();
+        const month = last.getMonth() + 1;
+        const newDay = month + '/' + day + '/' + 20
+        if (Number(this.state.today["mm"]) === month && Number(this.state.today["dd"]) === day) {
+            this.setState({ newDay: newDay }, () => {
+                this.setState({ isToday: true }, () => {
+                    this.setNewDayCountries(false);
+                })
+            })
+        } else {
+            this.setState({ newDay: newDay }, () => {
+                this.setState({ isToday: false }, () => {
+                    this.setNewDayCountries(true);
+                })
+            })
+        }
+    }
+
+    setNewDayCountries(customDay) {
+        if (customDay) {
+            const newDayCountries = [];
+            const newDay = this.state.newDay;
+            this.state.allCountries.forEach(country => {
+                let same = false;
+                if (country.countryregion === 'US') {
+                    country.countryregion = 'USA'
+                }
+                if (country.countryregion === 'United Kingdom') {
+                    country.countryregion = 'UK'
+                }
+                newDayCountries.forEach(e => {
+                    if (e.country === country.countryregion) {
+                        e.cases = e.cases + (country.timeseries[newDay].confirmed ? country.timeseries[newDay].confirmed : 0);
+                        e.deaths = e.deaths + country.timeseries[newDay].deaths;
+                        e.recovered = e.recovered + country.timeseries[newDay].recovered;
+                        same = true;
+                    }
+                });
+                if (!same) {
+                    newDayCountries.push(
+                        {
+                            "country": country.countryregion,
+                            "cases": country.timeseries[newDay].confirmed,
+                            "todayCases": null,
+                            "deaths": country.timeseries[newDay].deaths,
+                            "todayDeaths": null,
+                            "recovered": country.timeseries[newDay].recovered,
+                            "active": null,
+                            "critical": null,
+                            "casesPerOneMillion": null,
+                            "deathsPerOneMillion": null
+                        }
+                    )
+                }
+            });
+            this.sort_by_key(newDayCountries, 'cases');
+            let totalDeaths = 0;
+            let totalConfirmed = 0;
+            let totalRecovered = 0;
+            newDayCountries.forEach(e => {
+                totalConfirmed = totalConfirmed + (e.cases ? e.cases : 0);
+                totalDeaths = totalDeaths + (e.deaths ? e.deaths : 0);
+                totalRecovered = totalRecovered + (e.recovered ? e.recovered : 0);
+            });
+            this.props.onDaySet(newDayCountries);
+            this.props.onAllData({
+                cases: totalConfirmed,
+                deaths: totalDeaths,
+                recovered: totalRecovered
+            });
+        } else {
+            this.sort_by_key(this.state.allCountriesToday, 'cases');
+            this.props.onDaySet(this.state.allCountriesToday);
+            this.props.onAllData(this.state.totalToday);
+        }
+    }
+
+    sort_by_key(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        });
+    }
+
+    _parseJSON(response) {
+        return response.text().then(function (text) {
+            return text ? JSON.parse(text) : {}
+        })
+    }
+
+
+    render() {
+        return (
+            <div id="dayRange">
+                <div>
+                    <h3>{this.state.newDay}</h3>
+                </div>
+                <input type="range" min="0" max={this.state.totalDays} className="slider" id="daySlider" onChange={this.handleChange}></input>
+            </div>
+        )
+    }
+}

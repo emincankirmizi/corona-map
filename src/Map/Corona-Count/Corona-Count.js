@@ -2,7 +2,11 @@ import React from 'react';
 import './Corona-Count.css';
 import L from 'leaflet';
 import data from '../coords/coords.json';
+// import countriesNames from '../coords/countries.json';
 import LineChart from '../../Map/LineChart/LineChart';
+import DayRange from '../..//Map/Day-Range/Day-Range'
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+require('bootstrap/dist/css/bootstrap.css');
 
 export default class CoronaCount extends React.Component {
 
@@ -3158,9 +3162,15 @@ export default class CoronaCount extends React.Component {
             openNewCases: false,
             isMobile: false,
             showLineChart: false,
-            message: null
+            message: null,
+            design: null,
+            currentData: null,
+            newDay: [],
+            graphicId: 1
         }
         this.handleChange = this.handleChange.bind(this);
+        this.setCircle = this.setCircle.bind(this);
+        this.setArea = this.setArea.bind(this);
     }
 
     componentDidMount() {
@@ -3171,20 +3181,8 @@ export default class CoronaCount extends React.Component {
             Notification.requestPermission(function (permission) {
             });
         }
-        fetch('https://coronavirus-19-api.herokuapp.com/countries')
-            .then(response => this._parseJSON(response))
-            .then(data => { this.setCountryData(data) });
-        fetch('https://coronavirus-19-api.herokuapp.com/all')
-            .then(response => this._parseJSON(response))
-            .then(data => { this.setAllData(data) });
-        setInterval(() => {
-            fetch('https://coronavirus-19-api.herokuapp.com/countries')
-                .then(response => this._parseJSON(response))
-                .then(data => { this.setCountryData(data) });
-            fetch('https://coronavirus-19-api.herokuapp.com/all')
-                .then(response => response.json())
-                .then(data => { this.setAllData(data) });
-        }, 300000);
+        this.setState({ design: 'area' });
+        document.getElementById('area').checked = true;
         if (window.innerWidth > 600) {
             document.getElementById("panel").style.display = "block";
             document.getElementsByClassName('hamburger')[0].classList.toggle('change');
@@ -3202,18 +3200,11 @@ export default class CoronaCount extends React.Component {
         });
     }
 
-    _parseJSON(response) {
-        return response.text().then(function (text) {
-            return text ? JSON.parse(text) : {}
-        })
-    }
-
-
-    setCountryData(data) {
+    setCountryData(data, dayRange = false) {
         if (data.length === 0) {
             return;
         }
-        if (this.state.totalCountryCorona.length !== 0) {
+        if (this.state.totalCountryCorona.length !== 0 && !dayRange) {
             const newCasesArray = [];
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
                 if (this.state.totalCountryCorona[i].cases < data[i].cases) {
@@ -3246,8 +3237,9 @@ export default class CoronaCount extends React.Component {
                 document.getElementsByClassName('newCases')[0].style.display = 'block';
             }
         }
-        this.setState({ totalCountryCorona: data })
-        this.checkData();
+        this.setState({ totalCountryCorona: data }, () => {
+            this.checkData();
+        })
     }
 
     setAllData(data) {
@@ -3263,54 +3255,101 @@ export default class CoronaCount extends React.Component {
                 this.props.map.removeLayer(layer);
             }
         });
-        for (let i = 0; i < data[0].features.length; i++) {
-            let coronaExist = false;
-            for (let y = 0; y < this.state.totalCountryCorona.length; y++) {
-                if (data[0].features[i].properties.name === this.state.totalCountryCorona[y].country) {
-                    coronaExist = true;
-                }
-            }
-            if (!coronaExist) {
-                const aa = data[0].features[i];
-                const countStyle = {
-                    "color": '#ffffff',
-                    "weight": 0.1,
-                    "opacity": 0.55
-                };
-                L.geoJSON(aa, {
-                    style: countStyle,
-                    onEachFeature: (f, l) => {
-                        l.bindPopup(`
-                        <b>${aa.properties.name}</b><br>
-                        <b>Vaka yok.</b><br>
-                        `);
+        if (this.state.design === 'area') {
+            for (let i = 0; i < data[0].features.length; i++) {
+                let coronaExist = false;
+                for (let y = 0; y < this.state.totalCountryCorona.length; y++) {
+                    if (data[0].features[i].properties.name === this.state.totalCountryCorona[y].country) {
+                        coronaExist = true;
                     }
-                }).addTo(this.props.map);
-            }
-        }
-        data[0].features.filter(
-            o => {
-                const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country);
-                if (aa) {
-                    const countStyle = {
-                        "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
-                        "weight": 0.1,
-                        "opacity": 0.55
-                    };
-                    L.geoJSON(o, {
-                        style: countStyle,
-                        onEachFeature: (f, l) => {
-                            l.bindPopup(`
-                            <b>${aa.country}</b><br>
-                            <b>Aktif:${aa.active}</b><br>
-                            <b>Ölüm:${aa.deaths}</b><br>
-                            <b>İyileşen:${aa.recovered}</b><br>
-                            `);
-                        }
-                    }).addTo(this.props.map);
                 }
-                return true;
-            })
+                if (!coronaExist) {
+                    if (this.state.design) {
+                        const aa = data[0].features[i];
+                        const countStyle = {
+                            "color": '#ffffff',
+                            "weight": 0.1,
+                            "opacity": 0.55
+                        };
+                        L.geoJSON(aa, {
+                            style: countStyle,
+                            onEachFeature: (f, l) => {
+                                l.bindPopup(`
+                                <b>${aa.properties.name}</b><br>
+                                <b>Vaka yok.</b><br>
+                                `);
+                            }
+                        }).addTo(this.props.map);
+                    }
+                }
+            }
+            data[0].features.filter(
+                o => {
+                    const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country);
+                    if (aa) {
+                        const countStyle = {
+                            "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
+                            "weight": 0.1,
+                            "opacity": 0.55
+                        };
+                        if (aa.cases === 0) {
+                            const bb = o;
+                            const nullStyle = {
+                                "color": '#ffffff',
+                                "weight": 0.1,
+                                "opacity": 0.55
+                            };
+                            L.geoJSON(bb, {
+                                style: nullStyle,
+                                onEachFeature: (f, l) => {
+                                    l.bindPopup(`
+                                    <b>${bb.properties.name}</b><br>
+                                    <b>Vaka yok.</b><br>
+                                    `);
+                                }
+                            }).addTo(this.props.map);
+                        } else {
+                            L.geoJSON(o, {
+                                style: countStyle,
+                                onEachFeature: (f, l) => {
+                                    l.bindPopup(`
+                                    <b>${aa.country}</b><br>
+                                    <b>Vaka:${aa.cases}</b><br>
+                                    <b>Ölüm:${aa.deaths}</b><br>
+                                    <b>İyileşen:${aa.recovered}</b><br>
+                                    `);
+                                }
+                            }).addTo(this.props.map);
+                        }
+                    }
+                    return true;
+                })
+        } else {
+            this.state.totalCountryCorona.filter(
+                o2 => {
+                    const aa = this.state.countries.find(o => o2.country === o.name)
+                    if (aa) {
+                        if (o2.cases !== 0) {
+                            const circleCenter = aa.latlng;
+                            const circleOptions = {
+                                color: "red",
+                                fillColor: "red",
+                                fillOpacity: 0.3,
+                                weight: 3
+                            }
+                            const circle = L.circle(circleCenter, o2.cases * 10, circleOptions);
+                            circle.bindPopup(`
+                        <b>${o2.country}</b><br>
+                        <b>Vaka:${o2.cases}</b><br>
+                        <b>Ölüm:${o2.deaths}</b><br>
+                        <b>İyileşen:${o2.recovered}</b><br>
+                        `);
+                            circle.addTo(this.props.map);
+                        }
+                    }
+                    return true;
+                })
+        }
     }
 
     chooseCountry(country) {
@@ -3327,6 +3366,7 @@ export default class CoronaCount extends React.Component {
             }, 1);
         }
         document.getElementsByClassName('infoPanel')[0].style.display = 'block';
+        this.setState({ graphicId: 1 });
         this.props.map.on('click', (e) => {
             this.setState({ showLineChart: false });
             document.getElementsByClassName('infoPanel')[0].style.display = 'none';
@@ -3338,7 +3378,7 @@ export default class CoronaCount extends React.Component {
         if (document.getElementById("panel").style.display === "none") {
             document.getElementById("panel").style.display = "block";
             if (window.innerWidth > 600) {
-                document.getElementsByClassName("infoPanel")[0].style.left = "351px";
+                document.getElementsByClassName("infoPanel")[0].style.left = "350px";
                 document.getElementsByClassName("infoPanel")[0].style.top = "0px";
             } else {
                 document.getElementsByClassName("infoPanel")[0].style.width = "90%";
@@ -3366,6 +3406,39 @@ export default class CoronaCount extends React.Component {
         });
     };
 
+    setCircle(e) {
+        this.setState({ design: 'circle' });
+        setTimeout(() => {
+            this.setCountryData(this.state.totalCountryCorona);
+            document.getElementsByClassName('legend')[0].style.display = "none";
+        }, 1);
+    };
+
+    setArea(e) {
+        this.setState({ design: 'area' });
+        setTimeout(() => {
+            this.setCountryData(this.state.totalCountryCorona);
+            document.getElementsByClassName('legend')[0].style.display = "block";
+        }, 1);
+    };
+
+    setDay = (day) => {
+        this.setState({ newDay: day });
+        this.setCountryData(day, true);
+        day.forEach(element => {
+            if (element.country === this.state.choosenCountry.country) {
+                this.setState({ choosenCountry: element });
+            }
+        });
+    }
+
+    setAllCountries = (total) => {
+        this.setAllData(total);
+    }
+
+    openGraphic(graphicId) {
+        this.setState({ graphicId: graphicId });
+    }
 
     render() {
         return (
@@ -3378,6 +3451,20 @@ export default class CoronaCount extends React.Component {
                         <h5>Toplam Vaka: {this.state.totalCorona.cases}</h5>
                         <h5>Toplam Ölüm: {this.state.totalCorona.deaths}</h5>
                         <h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
+                    </div>
+                    <div id="mapPattern" className="map-design">
+                        <span>Gösterim Şekli:</span>&nbsp;&nbsp;
+                        <input type="radio" id="area" name="design" value="area" onChange={this.setArea} ></input>
+                        <label htmlFor="area">Alan</label>&nbsp;&nbsp;
+                        <input type="radio" id="circle" name="design" value="circle" onChange={this.setCircle} ></input>
+                        <label htmlFor="circle">Daire</label>
+                    </div>
+                    <div className="loader"></div>
+                    <div id="resWait">
+                        <p>Zamanlayıcı için veri bekleniyor.</p>
+                    </div>
+                    <div id="rangeDiv">
+                        <DayRange onDaySet={this.setDay} onAllData={this.setAllCountries}></DayRange>
                     </div>
                     <div id="searchBox" className="search-box">
                         <input type="text" placeholder="Ülke adı girin..." maxLength="7" onChange={this.handleChange}></input>
@@ -3399,7 +3486,7 @@ export default class CoronaCount extends React.Component {
                                     <p>İyileşen: {country.recovered}</p>
                                     {/* {this.state.onlyDeaths || this.state.allStutation ? <p>Durumu Kritik: {country.critical}</p> : null}
                                 <p>Aktif: {country.active}</p> */}
-                                    <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p>
+                                    {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null}
                                 </div>
                             </div>
                         ))}
@@ -3426,7 +3513,13 @@ export default class CoronaCount extends React.Component {
                         <p>Bir Milyonda: {this.state.choosenCountry.casesPerOneMillion} kişi</p>
                     </div>
                     <div id="dashboardContent" >
-                        {this.state.showLineChart ? <LineChart choosen={this.choosenCou[0].country_code}></LineChart> : null}
+                        <DropdownButton id="dropdown-basic-button" title="Grafikler">
+                            <Dropdown.Item onClick={() => this.openGraphic(1)}>Genel</Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.openGraphic(2)}>Günlük Vaka</Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.openGraphic(3)}>Günlük Ölüm</Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.openGraphic(4)}>Günlük İyileşme</Dropdown.Item>
+                        </DropdownButton>
+                        {this.state.showLineChart ? <LineChart choosen={this.choosenCou[0].country_code} graphicId={this.state.graphicId}></LineChart> : null}
                     </div>
                     <p style={{ textAlign: "center", color: "#66a8ff" }}>Grafik Veri Sağlayıcısı: Johns Hopkins University</p>
                 </div>

@@ -1,5 +1,5 @@
 .dashoardArea {
-    position: relative;
+    position: inherit;
     z-index: 9999;
     background-color: #111;
     transition: 0.5s;

@@ -24,6 +24,7 @@
     transition: 0.5s;
     overflow-x: auto;
     color: white;
+    overflow-x: hidden;
     background-color:rgb(15, 14, 14);
   }
 
@@ -51,7 +52,7 @@
     padding-top: 4%;
     padding-bottom: 4%;
     margin-left: 15%;
-    margin-bottom: 10%;
+    margin-bottom: 2%;
     background-color: #3a0c0c;
     color: white;
     margin-right: 15%;
@@ -180,6 +181,11 @@
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
+.map-design {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
 @media only screen and (max-width: 880px) {
   #panel {
     width: 100%;
@@ -213,6 +219,10 @@
 
   .apexcharts-menu-icon {
     display: none;
+  }
+
+  #dropdown-basic-button {
+    margin-left: 3%;
   }
 
 @media only screen and (max-width: 718px) {
