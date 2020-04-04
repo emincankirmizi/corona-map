@@ -33,7 +33,7 @@ export default class Map extends React.Component {
 
     addBaseLayer() {
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> -- <a href="https://tr.linkedin.com/in/emin-can-kirmizi-b14398144" target="window.open()">Emin Can Kırmızı tarafından yapıldı.</a>',
             subdomains: 'abcd',
             maxZoom: 12,
         }).addTo(this.map);

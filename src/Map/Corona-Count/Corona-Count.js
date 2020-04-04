@@ -4,7 +4,7 @@ import L from 'leaflet';
 import data from '../coords/coords.json';
 // import countriesNames from '../coords/countries.json';
 import LineChart from '../../Map/LineChart/LineChart';
-import DayRange from '../..//Map/Day-Range/Day-Range'
+import DayRange from '../..//Map/Day-Range/Day-Range';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 require('bootstrap/dist/css/bootstrap.css');
 
@@ -111,7 +111,7 @@ export default class CoronaCount extends React.Component {
                         24,
                         54
                     ],
-                    "name": "United Arab Emirates",
+                    "name": "UAE",
                     "country_code": "AE",
                     "capital": "Abu Dhabi"
                 },
@@ -3275,8 +3275,10 @@ export default class CoronaCount extends React.Component {
                             style: countStyle,
                             onEachFeature: (f, l) => {
                                 l.bindPopup(`
+                                <div id="mapPopup">
                                 <b>${aa.properties.name}</b><br>
                                 <b>Vaka yok.</b><br>
+                                </div>
                                 `);
                             }
                         }).addTo(this.props.map);
@@ -3287,6 +3289,11 @@ export default class CoronaCount extends React.Component {
                 o => {
                     const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country);
                     if (aa) {
+                        const o2 = this.state.countries.find(o => aa.country === o.name);
+                        if (o2) {
+                            aa.country_code = o2.country_code;
+                            aa.flag = `https://www.countryflags.io/${o2.country_code}/flat/64.png`;
+                        }
                         const countStyle = {
                             "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
                             "weight": 0.1,
@@ -3303,8 +3310,10 @@ export default class CoronaCount extends React.Component {
                                 style: nullStyle,
                                 onEachFeature: (f, l) => {
                                     l.bindPopup(`
+                                    <div id="mapPopup">
                                     <b>${bb.properties.name}</b><br>
                                     <b>Vaka yok.</b><br>
+                                    </div>
                                     `);
                                 }
                             }).addTo(this.props.map);
@@ -3313,10 +3322,14 @@ export default class CoronaCount extends React.Component {
                                 style: countStyle,
                                 onEachFeature: (f, l) => {
                                     l.bindPopup(`
-                                    <b>${aa.country}</b><br>
-                                    <b>Vaka:${aa.cases}</b><br>
-                                    <b>Ölüm:${aa.deaths}</b><br>
-                                    <b>İyileşen:${aa.recovered}</b><br>
+                                    <div id="mapPopup">
+                                    <img src=${aa.flag} style={{ float: "left" }} width="30px" height="30px" alt="${aa.country}"></img>
+                                    <b>${aa.country}</b>
+                                    <hr id="rowLine">
+                                    <p><span class="dotCasesMap"></span><b>Vaka:${aa.cases}</b></p>
+                                    <p><span class="dotDeathsMap"></span><b>Ölüm:${aa.deaths}</b></p>
+                                    <p><span class="dotRecoveredMap"></span><b>İyileşen:${aa.recovered}</b></p>
+                                    </div>
                                     `);
                                 }
                             }).addTo(this.props.map);
@@ -3330,6 +3343,8 @@ export default class CoronaCount extends React.Component {
                     const aa = this.state.countries.find(o => o2.country === o.name)
                     if (aa) {
                         if (o2.cases !== 0) {
+                            o2.country_code = aa.country_code;
+                            o2.flag = `https://www.countryflags.io/${aa.country_code}/flat/64.png`;
                             const circleCenter = aa.latlng;
                             const circleOptions = {
                                 color: "red",
@@ -3339,10 +3354,13 @@ export default class CoronaCount extends React.Component {
                             }
                             const circle = L.circle(circleCenter, o2.cases * 10, circleOptions);
                             circle.bindPopup(`
-                        <b>${o2.country}</b><br>
-                        <b>Vaka:${o2.cases}</b><br>
-                        <b>Ölüm:${o2.deaths}</b><br>
-                        <b>İyileşen:${o2.recovered}</b><br>
+                        <div id="mapPopup">
+                        <img src=${o2.flag} style={{ float: "left" }} width="30px" height="30px" alt="${aa.country}"></img>
+                        <b>${o2.country}</b>
+                        <p><span class="dotCasesMap"></span><b>Vaka:${o2.cases}</b></p>
+                        <p><span class="dotDeathsMap"></span><b>Ölüm:${o2.deaths}</b></p>
+                        <p><span class="dotRecoveredMap"></span><b>İyileşen:${o2.recovered}</b></p>
+                        </div>
                         `);
                             circle.addTo(this.props.map);
                         }
@@ -3423,13 +3441,18 @@ export default class CoronaCount extends React.Component {
     };
 
     setDay = (day) => {
-        this.setState({ newDay: day });
-        this.setCountryData(day, true);
-        day.forEach(element => {
-            if (element.country === this.state.choosenCountry.country) {
-                this.setState({ choosenCountry: element });
-            }
-        });
+        if (day.length) {
+            document.getElementById("covidAPIWait").style.display = "none";
+            this.setState({ newDay: day });
+            this.setCountryData(day, true);
+            day.forEach(element => {
+                if (element.country === this.state.choosenCountry.country) {
+                    this.setState({ choosenCountry: element });
+                }
+            });
+        } else {
+            document.getElementById("covidAPIWait").style.display = "block";
+        }
     }
 
     setAllCountries = (total) => {
@@ -3446,11 +3469,14 @@ export default class CoronaCount extends React.Component {
                 <div id="panel">
                     <div className="all">
                         <a href="https://hsgm.saglik.gov.tr/tr/covid19" target="window.open()"><h1>Covid-19</h1></a>
-                        <a href="https://tr.linkedin.com/in/emin-can-kirmizi-b14398144" target="window.open()"><p>Emin Can Kırmızı tarafından yapıldı.</p></a>
-                        <a href="https://coronavirus-19-api.herokuapp.com/countries" target="window.open()"><p>Covid-19-API</p></a>
-                        <h5>Toplam Vaka: {this.state.totalCorona.cases}</h5>
-                        <h5>Toplam Ölüm: {this.state.totalCorona.deaths}</h5>
-                        <h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
+                        <a href="https://corom/countries" target="window.open()"><p>Covid-19-API</p></a>
+                    </div>
+                    <div id="allInfo" className="allInfo">
+                        <span className="dotCases"></span><h5>Toplam Vaka: {this.state.totalCorona.cases}</h5>
+                        <hr id="rowLine"></hr>
+                        <span className="dotDeaths"></span><h5>Toplam Ölüm: {this.state.totalCorona.deaths}</h5>
+                        <hr id="rowLine"></hr>
+                        <span className="dotRecovered"></span><h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
                     </div>
                     <div id="mapPattern" className="map-design">
                         <span>Gösterim Şekli:</span>&nbsp;&nbsp;
@@ -3470,6 +3496,9 @@ export default class CoronaCount extends React.Component {
                         <input type="text" placeholder="Ülke adı girin..." maxLength="7" onChange={this.handleChange}></input>
                     </div>
                     <div className="countries">
+                        <div id="covidAPIWait">
+                            <p style={{ color: "red" }}>Veri sağlayıcısına bağlanılamadı.</p>
+                        </div>
                         {this.state.totalCountryCorona.filter(e => {
                             if (this.state.message) {
                                 return e.country.toLowerCase().includes(this.state.message.toLowerCase());
@@ -3478,15 +3507,16 @@ export default class CoronaCount extends React.Component {
                             }
                         }).map(country => (
                             <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
-                                <h5>{country.country}</h5>
+                                <img src={country.flag} style={{ float: "left" }} width="30px" height="30px" alt={country.country}></img><h5 style={{ marginTop: "5px" }}>{country.country}</h5>
+                                <hr id="rowLine"></hr>
                                 <div className="title">
-                                    <p>Vaka: {country.cases}</p>
+                                    <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
                                     {/* <p>Bugün: {country.todayCases}</p> */}
-                                    <p>Ölüm: {country.deaths}</p>
-                                    <p>İyileşen: {country.recovered}</p>
+                                    <p><span className="dotDeathsInfo"></span><span> Ölüm: {country.deaths}</span></p>
+                                    <p><span className="dotRecoveredInfo"></span><span>İyileşen: {country.recovered}</span></p>
                                     {/* {this.state.onlyDeaths || this.state.allStutation ? <p>Durumu Kritik: {country.critical}</p> : null}
                                 <p>Aktif: {country.active}</p> */}
-                                    {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null}
+                                    {/* {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null} */}
                                 </div>
                             </div>
                         ))}
@@ -3500,7 +3530,7 @@ export default class CoronaCount extends React.Component {
                 <div className="infoPanel" style={{ display: this.state.openInfo ? 'block' : 'none' }}>
                     <span className="closeInfoPanel">&times;</span>
                     <div className="infoPanelTitle">
-                        <h5>{this.state.choosenCountry.country}</h5>
+                        <img src={this.state.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt={this.state.choosenCountry.country}></img><h5 style={{ marginTop: "2px" }}>{this.state.choosenCountry.country}</h5>
                     </div>
                     <div id="inforPanelContent" className="infoPanelContent">
                         <p>Vaka: {this.state.choosenCountry.cases}</p>

@@ -44,6 +44,11 @@
     display: inline;
   }
 
+  #covidAPIWait {
+    text-align: center;
+    display: inline;
+  }
+
   .loader {
     margin-left: 45%;
     border: 6px solid #f3f3f3;

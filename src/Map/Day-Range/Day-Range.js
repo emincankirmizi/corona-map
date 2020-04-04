@@ -60,7 +60,7 @@ export default class DayRange extends React.Component {
                     .then(response => this._parseJSON(response))
                     .then(data => { this.setState({ allCountriesToday: data }, () => { this.setNewDayCountries(false); }) });
                 fetch('https://coronavirus-19-api.herokuapp.com/all')
-                    .then(response => response.json())
+                    .then(response => this._parseJSON(response))
                     .then(data => {
                         this.setState({ allCountriesToday: data }, () => { this.props.onAllData(data); })
                     });
@@ -131,7 +131,9 @@ export default class DayRange extends React.Component {
                             "active": null,
                             "critical": null,
                             "casesPerOneMillion": null,
-                            "deathsPerOneMillion": null
+                            "deathsPerOneMillion": null,
+                            "country_code": country.countrycode ? country.countrycode.iso2 ? country.countrycode.iso2 : undefined : undefined,
+                            "flag": country.countrycode ? country.countrycode.iso2 ? `https://www.countryflags.io/${country.countrycode.iso2}/flat/64.png` : undefined : undefined,
                         }
                     )
                 }
@@ -152,7 +154,7 @@ export default class DayRange extends React.Component {
                 recovered: totalRecovered
             });
         } else {
-            this.setState({isDayNull: false});
+            this.setState({ isDayNull: false });
             this.sort_by_key(this.state.allCountriesToday, 'cases');
             this.props.onDaySet(this.state.allCountriesToday);
             this.props.onAllData(this.state.totalToday);
@@ -160,10 +162,12 @@ export default class DayRange extends React.Component {
     }
 
     sort_by_key(array, key) {
-        return array.sort(function (a, b) {
-            var x = a[key]; var y = b[key];
-            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-        });
+        if (array && array.length && array.length !== 0) {
+            return array.sort(function (a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+            });
+        }
     }
 
     _parseJSON(response) {
