@@ -111,7 +111,7 @@ export default class CoronaCount extends React.Component {
                         24,
                         54
                     ],
-                    "name": "UAE",
+                    "name": "United Arab Emirates",
                     "country_code": "AE",
                     "capital": "Abu Dhabi"
                 },
@@ -619,7 +619,7 @@ export default class CoronaCount extends React.Component {
                         8,
                         -5
                     ],
-                    "name": "Ivory Coast",
+                    "name": "Côte d'Ivoire",
                     "country_code": "CI",
                     "capital": "Yamoussoukro"
                 },
@@ -644,7 +644,7 @@ export default class CoronaCount extends React.Component {
                         0,
                         25
                     ],
-                    "name": "DR Congo",
+                    "name": "Congo (Kinshasa)",
                     "country_code": "CD",
                     "capital": "Kinshasa"
                 },
@@ -656,7 +656,7 @@ export default class CoronaCount extends React.Component {
                         -1,
                         15
                     ],
-                    "name": "Republic of the Congo",
+                    "name": "Congo (Brazzaville)",
                     "country_code": "CG",
                     "capital": "Brazzaville"
                 },
@@ -1562,7 +1562,7 @@ export default class CoronaCount extends React.Component {
                         37,
                         127.5
                     ],
-                    "name": "S. Korea",
+                    "name": "Korea, South",
                     "country_code": "KR",
                     "capital": "Seoul"
                 },
@@ -3506,6 +3506,7 @@ export default class CoronaCount extends React.Component {
                                 return e;
                             }
                         }).map(country => (
+                            country.country !== "World" ?
                             <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
                                 <img src={country.flag} style={{ float: "left" }} width="30px" height="30px" alt={country.country}></img><h5 style={{ marginTop: "5px" }}>{country.country}</h5>
                                 <hr id="rowLine"></hr>
@@ -3518,7 +3519,7 @@ export default class CoronaCount extends React.Component {
                                 <p>Aktif: {country.active}</p> */}
                                     {/* {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null} */}
                                 </div>
-                            </div>
+                            </div> : null
                         ))}
                     </div>
                 </div>

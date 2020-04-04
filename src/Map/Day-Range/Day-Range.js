@@ -110,7 +110,24 @@ export default class DayRange extends React.Component {
                 }
                 newDayCountries.forEach(e => {
                     if (e.country === country.countryregion) {
-                        if (country.timeseries[newDay]) {
+                        if (country.provincestate === "Greenland") {
+                            newDayCountries.push(
+                                {
+                                    "country": country.provincestate,
+                                    "cases": country.timeseries[newDay] ? country.timeseries[newDay].confirmed : 0,
+                                    "todayCases": null,
+                                    "deaths": country.timeseries[newDay] ? country.timeseries[newDay].deaths : 0,
+                                    "todayDeaths": null,
+                                    "recovered": country.timeseries[newDay] ? country.timeseries[newDay].recovered : 0,
+                                    "active": null,
+                                    "critical": null,
+                                    "casesPerOneMillion": null,
+                                    "deathsPerOneMillion": null,
+                                    "country_code": country.countrycode ? country.countrycode.iso2 ? country.countrycode.iso2 : undefined : undefined,
+                                    "flag": country.countrycode ? country.countrycode.iso2 ? `https://www.countryflags.io/${country.countrycode.iso2}/flat/64.png` : undefined : undefined,
+                                }
+                            )
+                        } else if (country.timeseries[newDay]) {
                             e.cases = e.cases + (country.timeseries[newDay].confirmed ? country.timeseries[newDay].confirmed : 0);
                             e.deaths = e.deaths + country.timeseries[newDay].deaths;
                             e.recovered = e.recovered + country.timeseries[newDay].recovered;
@@ -156,6 +173,20 @@ export default class DayRange extends React.Component {
         } else {
             this.setState({ isDayNull: false });
             this.sort_by_key(this.state.allCountriesToday, 'cases');
+            this.state.allCountriesToday.forEach(e => {
+                if (e.country === "UAE") {
+                    e.country = "United Arab Emirates";
+                }
+                if (e.country === "Ivory Coast") {
+                    e.country = "Côte d'Ivoire";
+                }
+                if (e.country === "Congo") {
+                    e.country = "Congo (Brazzaville)";
+                }
+                if (e.country === "S. Korea") {
+                    e.country = "Korea, South";
+                }
+            })
             this.props.onDaySet(this.state.allCountriesToday);
             this.props.onAllData(this.state.totalToday);
         }
