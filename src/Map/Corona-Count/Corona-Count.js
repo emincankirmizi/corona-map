@@ -114,12 +114,71 @@ export default class CoronaCount extends React.Component {
         this.setState({ totalCorona: data })
     }
 
+    setFlags() {
+        const tc = this.state.totalCountryCorona.find(o2 => "Turks and Caicos" === o2.country);
+        if (tc) {
+            tc.country_code = "tc";
+            tc.flag = `https://www.countryflags.io/tc/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const vc = this.state.totalCountryCorona.find(o2 => "St. Vincent Grenadines" === o2.country);
+        if (vc) {
+            vc.country_code = "vc";
+            vc.flag = `https://www.countryflags.io/vc/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const cv = this.state.totalCountryCorona.find(o2 => "Cabo Verde" === o2.country);
+        if (cv) {
+            cv.country_code = "cv";
+            cv.flag = `https://www.countryflags.io/cv/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const sz = this.state.totalCountryCorona.find(o2 => "Eswatini" === o2.country);
+        if (sz) {
+            sz.country_code = "cv";
+            sz.flag = `https://www.countryflags.io/sz/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const cd = this.state.totalCountryCorona.find(o2 => "DRC" === o2.country);
+        if (cd) {
+            cd.country_code = "cd";
+            cd.flag = `https://www.countryflags.io/cd/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const fo = this.state.totalCountryCorona.find(o2 => "Faeroe Islands" === o2.country);
+        if (fo) {
+            fo.country_code = "fo";
+            fo.flag = `https://www.countryflags.io/fo/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        const mk = this.state.totalCountryCorona.find(o2 => "North Macedonia" === o2.country);
+        if (mk) {
+            mk.country_code = "mk";
+            mk.flag = `https://www.countryflags.io/mk/flat/64.png`;
+            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+        }
+        this.state.countries.filter(
+            o => {
+                const aa = this.state.totalCountryCorona.find(o2 => o.name === o2.country);
+                if (aa) {
+                    const o2 = this.state.countries.find(o => aa.country === o.name);
+                    if (o2) {
+                        aa.country_code = o2.country_code;
+                        aa.flag = `https://www.countryflags.io/${o2.country_code}/flat/64.png`;
+                        this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+                    }
+                }
+            }
+        )
+    }
+
     checkData() {
         this.props.map.eachLayer((layer) => {
             if (!layer['_url']) {
                 this.props.map.removeLayer(layer);
             }
         });
+        this.setFlags();
         if (this.state.design === 'area') {
             for (let i = 0; i < data[0].features.length; i++) {
                 let coronaExist = false;
@@ -154,12 +213,12 @@ export default class CoronaCount extends React.Component {
                 o => {
                     const aa = this.state.totalCountryCorona.find(o2 => o.properties.name === o2.country);
                     if (aa) {
-                        const o2 = this.state.countries.find(o => aa.country === o.name);
-                        if (o2) {
-                            aa.country_code = o2.country_code;
-                            aa.flag = `https://www.countryflags.io/${o2.country_code}/flat/64.png`;
-                            this.setState({ totalCountryCorona: this.state.totalCountryCorona })
-                        }
+                        // const o2 = this.state.countries.find(o => aa.country === o.name);
+                        // if (o2) {
+                        //     aa.country_code = o2.country_code;
+                        //     aa.flag = `https://www.countryflags.io/${o2.country_code}/flat/64.png`;
+                        //     this.setState({ totalCountryCorona: this.state.totalCountryCorona })
+                        // }
                         const countStyle = {
                             "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
                             "weight": 0.1,
@@ -189,7 +248,7 @@ export default class CoronaCount extends React.Component {
                                 onEachFeature: (f, l) => {
                                     l.bindPopup(`
                                     <div id="mapPopup">
-                                    <img src=${aa.flag} style={{ float: "left" }} width="30px" height="30px" alt="${aa.country}"></img>
+                                    <img src=${aa.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                                     <b>${aa.country}</b>
                                     <hr id="rowLine">
                                     <p><span class="dotCasesMap"></span><b>Vaka:${aa.cases}</b></p>
@@ -222,7 +281,7 @@ export default class CoronaCount extends React.Component {
                             const circle = L.circle(circleCenter, o2.cases * 10, circleOptions);
                             circle.bindPopup(`
                         <div id="mapPopup">
-                        <img src=${o2.flag} style={{ float: "left" }} width="30px" height="30px" alt="${aa.country}"></img>
+                        <img src=${o2.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                         <b>${o2.country}</b>
                         <p><span class="dotCasesMap"></span><b>Vaka:${o2.cases}</b></p>
                         <p><span class="dotDeathsMap"></span><b>Ölüm:${o2.deaths}</b></p>
@@ -378,7 +437,7 @@ export default class CoronaCount extends React.Component {
                         }).map(country => (
                             country.country !== "World" ?
                                 <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
-                                    <img src={country.flag} style={{ float: "left" }} width="30px" height="30px" alt={country.country}></img><h5 style={{ marginTop: "5px" }}>{country.country}</h5>
+                                    <img src={country.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "5px" }}>{country.country}</h5>
                                     <hr id="rowLine"></hr>
                                     <div className="title">
                                         <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
@@ -401,7 +460,7 @@ export default class CoronaCount extends React.Component {
                 <div className="infoPanel" style={{ display: this.state.openInfo ? 'block' : 'none' }}>
                     <span className="closeInfoPanel">&times;</span>
                     <div className="infoPanelTitle">
-                        <img src={this.state.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt={this.state.choosenCountry.country}></img><h5 style={{ marginTop: "2px" }}>{this.state.choosenCountry.country}</h5>
+                        <img src={this.state.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "2px" }}>{this.state.choosenCountry.country}</h5>
                     </div>
                     <div id="inforPanelContent" className="infoPanelContent">
                         <p>Vaka: {this.state.choosenCountry.cases}</p>
