@@ -203,16 +203,16 @@
   margin-bottom: 5px;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 800px) {
   #panel {
     width: 100%;
   }
 
   .infoPanel {
-   width: 80%;
-   left: 10%;
+   width: 100%;
+   left: 0px;
    top: 0px;
-   height: 80%;
+   height: 100%;
    border-radius: 5px;
    opacity: 1;
    font-size: 11px;
@@ -223,7 +223,7 @@
   }
 
   .infoPanelTitle {
-    width: 90%;
+    width: 100%;
   }
 
   .dashoardArea {
@@ -366,6 +366,6 @@
 @media only screen and (max-height: 690px) {
   .infoPanel {
     opacity: 1;
-    height: 95%;
+    height: 100%;
   }
 }

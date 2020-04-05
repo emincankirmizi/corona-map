@@ -327,10 +327,11 @@ export default class CoronaCount extends React.Component {
                 document.getElementsByClassName("infoPanel")[0].style.left = "350px";
                 document.getElementsByClassName("infoPanel")[0].style.top = "0px";
             } else {
-                document.getElementsByClassName("infoPanel")[0].style.width = "90%";
-                document.getElementsByClassName("infoPanel")[0].style.left = "5%";
-                document.getElementsByClassName("infoPanel")[0].style.top = "15px";
+                document.getElementsByClassName("infoPanel")[0].style.width = "100%";
+                document.getElementsByClassName("infoPanel")[0].style.left = "0px";
+                document.getElementsByClassName("infoPanel")[0].style.top = "0px";
                 document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
+                document.getElementsByClassName("infoPanel")[0].style.height = "100%";
             }
 
         } else {
