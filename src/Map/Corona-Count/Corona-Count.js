@@ -443,6 +443,7 @@ export default class CoronaCount extends React.Component {
                                         {/* <p>Bugün: {country.todayCases}</p> */}
                                         <p><span className="dotDeathsInfo"></span><span> Ölüm: {country.deaths}</span></p>
                                         <p><span className="dotRecoveredInfo"></span><span>İyileşen: {country.recovered}</span></p>
+                                        <span>Detay için tıklayınız...</span>
                                         {/* {this.state.onlyDeaths || this.state.allStutation ? <p>Durumu Kritik: {country.critical}</p> : null}
                 <p>Aktif: {country.active}</p> */}
                                         {/* {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null} */}
