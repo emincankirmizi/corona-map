@@ -35,7 +35,6 @@ export default class CoronaCount extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.setCircle = this.setCircle.bind(this);
         this.setArea = this.setArea.bind(this);
-        this.setCountryInfos = this.setCountryInfos.bind(this);
     }
 
     componentDidMount() {
@@ -72,23 +71,25 @@ export default class CoronaCount extends React.Component {
         if (this.state.totalCountryCorona.length !== 0 && !dayRange) {
             const newCasesArray = [];
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
-                if (this.state.totalCountryCorona[i].cases < data[i].cases) {
-                    newCasesArray.push({
-                        "text": `${data[i].country} yeni vakalar açıkladı.Yeni sayı: ${data[i].cases}`,
-                        "case": 0
-                    });
-                }
-                if (this.state.totalCountryCorona[i].deaths < data[i].deaths) {
-                    newCasesArray.push({
-                        "text": `${data[i].country} yeni kayıpları açıkladı. Yeni sayı: ${data[i].deaths}`,
-                        "case": 1
-                    });
-                }
-                if (this.state.totalCountryCorona[i].recovered < data[i].recovered) {
-                    newCasesArray.push({
-                        "text": `${data[i].country} yeni iyileşen vakaları açıkladı. Yeni sayı: ${data[i].recovered}`,
-                        "case": 2
-                    });
+                if (this.state.totalCountryCorona[i].country !== "World") {
+                    if (this.state.totalCountryCorona[i].cases < data[i].cases) {
+                        newCasesArray.push({
+                            "text": `${data[i].country} yeni vakalar açıkladı.Yeni sayı: ${data[i].cases}`,
+                            "case": 0
+                        });
+                    }
+                    if (this.state.totalCountryCorona[i].deaths < data[i].deaths) {
+                        newCasesArray.push({
+                            "text": `${data[i].country} yeni kayıpları açıkladı. Yeni sayı: ${data[i].deaths}`,
+                            "case": 1
+                        });
+                    }
+                    if (this.state.totalCountryCorona[i].recovered < data[i].recovered) {
+                        newCasesArray.push({
+                            "text": `${data[i].country} yeni iyileşen vakaları açıkladı. Yeni sayı: ${data[i].recovered}`,
+                            "case": 2
+                        });
+                    }
                 }
             }
             if (newCasesArray.length !== 0) {
@@ -367,11 +368,11 @@ export default class CoronaCount extends React.Component {
         }, 1);
     };
 
-    setDay = (day) => {
+    setDay = (day, isToday) => {
         if (day.length) {
             document.getElementById("covidAPIWait").style.display = "none";
             this.setState({ newDay: day });
-            this.setCountryData(day, true);
+            this.setCountryData(day, isToday);
             day.forEach(element => {
                 if (element.country === this.state.choosenCountry.country) {
                     this.setState({ choosenCountry: element });
@@ -390,16 +391,13 @@ export default class CoronaCount extends React.Component {
         this.setState({ graphicId: graphicId });
     }
 
-    setCountryInfos() {
-    }
-
     render() {
         return (
             <div>
                 <div id="panel">
                     <div className="all">
                         <a href="https://hsgm.saglik.gov.tr/tr/covid19" target="window.open()"><h1>Covid-19</h1></a>
-                        <a href="https://corom/countries" target="window.open()"><p>Covid-19-API</p></a>
+                        <a href="https://coronavirus-19-api.herokuapp.com/countries" target="window.open()"><p>Covid-19-API #EvdeKal</p></a>
                     </div>
                     <div id="allInfo" className="allInfo">
                         <span className="dotCases"></span><h5>Toplam Vaka: {this.state.totalCorona.cases}</h5>
@@ -438,7 +436,7 @@ export default class CoronaCount extends React.Component {
                         }).map(country => (
                             country.country !== "World" ?
                                 <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
-                                    <img src={country.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "5px" }}>{country.country}</h5>
+                                    <img src={country.flag} style={{ float: "left", marginTop: "-6px", marginRight: "1px" }} width="30px" height="30px" alt="flag"></img><span style={{ fontSize: "15px" }}>{country.country}</span><span style={{ fontSize: "12px", color: "#E61904", float: "right" }}>{country.todayDeaths && country.todayDeaths !== 0 ? `+${country.todayDeaths}` : null}</span><span style={{ fontSize: "12px", color: "#0483D8", float: "right", marginRight: "3px" }}>{country.todayCases && country.todayCases !== 0 ? `+${country.todayCases}` : null}</span>
                                     <hr id="rowLine"></hr>
                                     <div className="title">
                                         <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
@@ -461,17 +459,25 @@ export default class CoronaCount extends React.Component {
                 <div className="infoPanel" style={{ display: this.state.openInfo ? 'block' : 'none' }}>
                     <span className="closeInfoPanel">&times;</span>
                     <div className="infoPanelTitle">
-                        <img src={this.state.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "2px" }}>{this.state.choosenCountry.country}</h5>
+                        <img src={this.state.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "2px" }}>{this.state.choosenCountry.country} (Toplam: {this.state.choosenCountry.cases})</h5>
                     </div>
                     <div id="inforPanelContent" className="infoPanelContent">
-                        <p>Vaka: {this.state.choosenCountry.cases}</p>
-                        <p>Bugünkü Vakalar: {this.state.choosenCountry.todayCases}</p>
-                        <p>Bugünkü Ölümler: {this.state.choosenCountry.todayDeaths}</p>
-                        <p>Ölüm: {this.state.choosenCountry.deaths}</p>
-                        <p>İyileşen: {this.state.choosenCountry.recovered}</p>
-                        <p>Durumu Kritik: {this.state.choosenCountry.critical}</p>
-                        <p>Aktif: {this.state.choosenCountry.active}</p>
-                        <p>Bir Milyonda: {this.state.choosenCountry.casesPerOneMillion} kişi</p>
+                        <div className="row">
+                            <div className="column">
+                                <p>Aktif: <span id="values">{this.state.choosenCountry.active}</span></p>
+                                <p>İyileşen: <span id="values">{this.state.choosenCountry.recovered}</span></p>
+                                <p>Durumu Kritik: <span id="values">{this.state.choosenCountry.critical}</span></p>
+                                <p>Bir Milyonda Vaka: <span id="values">{this.state.choosenCountry.casesPerOneMillion} kişi</span></p>
+                                <p>Test Sayısı: <span id="values">{this.state.choosenCountry.totalTests} kişi</span></p>
+                            </div>
+                            <div className="column">
+                                <p>Ölüm: <span id="values">{this.state.choosenCountry.deaths}</span></p>
+                                <p>Bugünkü Ölümler: <span id="values">{this.state.choosenCountry.todayDeaths}</span></p>
+                                <p>Bugünkü Vakalar: <span id="values">{this.state.choosenCountry.todayCases}</span></p>
+                                <p>Bir Milyonda Ölen: <span id="values">{this.state.choosenCountry.deathsPerOneMillion} kişi</span></p>
+                                <p>Bir Milyonda Test: <span id="values">{this.state.choosenCountry.testsPerOneMillion} kişi</span></p>
+                            </div>
+                        </div>
                     </div>
                     <div id="dashboardContent" >
                         <DropdownButton id="dropdown-basic-button" title="Grafikler">

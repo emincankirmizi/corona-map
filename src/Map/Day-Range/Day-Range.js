@@ -58,11 +58,11 @@ export default class DayRange extends React.Component {
             if (this.state.isToday) {
                 fetch('https://coronavirus-19-api.herokuapp.com/countries')
                     .then(response => this._parseJSON(response))
-                    .then(data => { this.setState({ allCountriesToday: data }, () => { this.setNewDayCountries(false); }) });
+                    .then(data => { this.setState({ allCountriesToday: data }, () => { this.setNewDayCountries(false, true); }) });
                 fetch('https://coronavirus-19-api.herokuapp.com/all')
                     .then(response => this._parseJSON(response))
                     .then(data => {
-                        this.setState({ allCountriesToday: data }, () => { this.props.onAllData(data); })
+                        this.setState({ totalToday: data }, () => { this.props.onAllData(data); })
                     });
             }
         }, 300000);
@@ -96,7 +96,7 @@ export default class DayRange extends React.Component {
         }
     }
 
-    setNewDayCountries(customDay) {
+    setNewDayCountries(customDay, isInterval = false) {
         if (customDay) {
             const newDayCountries = [];
             const newDay = this.state.newDay;
@@ -164,7 +164,7 @@ export default class DayRange extends React.Component {
                 totalDeaths = totalDeaths + (e.deaths ? e.deaths : 0);
                 totalRecovered = totalRecovered + (e.recovered ? e.recovered : 0);
             });
-            this.props.onDaySet(newDayCountries);
+            this.props.onDaySet(newDayCountries, true);
             this.props.onAllData({
                 cases: totalConfirmed,
                 deaths: totalDeaths,
@@ -187,7 +187,8 @@ export default class DayRange extends React.Component {
                     e.country = "Korea, South";
                 }
             })
-            this.props.onDaySet(this.state.allCountriesToday);
+            const newCases = isInterval ? false : true;
+            this.props.onDaySet(this.state.allCountriesToday, newCases);
             this.props.onAllData(this.state.totalToday);
         }
     }
