@@ -1,7 +1,7 @@
 import React from 'react';
 import './Legend.css';
 
-export default class Map extends React.Component {
+export default class Legend extends React.Component {
 
     render() {
         return (

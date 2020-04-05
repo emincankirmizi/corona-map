@@ -168,6 +168,7 @@ export default class CoronaCount extends React.Component {
                         this.setState({ totalCountryCorona: this.state.totalCountryCorona })
                     }
                 }
+                return o;
             }
         )
     }

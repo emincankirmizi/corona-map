@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rimraf ./build && react-scripts build && rimraf ./build/**/*.map",
+    "build": "react-scripts build && jscrambler",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jscrambler": "^5.5.0"
   }
 }
