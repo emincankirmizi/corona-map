@@ -156,6 +156,7 @@
 }
 
 .closeInfoPanel {
+  font-size: 20px;
   position: fixed;
   cursor: pointer;
   float: right;
@@ -163,6 +164,7 @@
 }
 
 .closeNewPanel{
+  font-size: 20px;
     position: fixed;
     cursor: pointer;
     float: right;
