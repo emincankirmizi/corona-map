@@ -275,12 +275,13 @@ export default class CoronaCount extends React.Component {
                             this.setState({ totalCountryCorona: this.state.totalCountryCorona })
                             const circleCenter = aa.latlng;
                             const circleOptions = {
-                                color: "red",
-                                fillColor: "red",
+                                color: "#0483d8",
+                                fillColor: "#0483d8",
                                 fillOpacity: 0.3,
                                 weight: 3
                             }
-                            const circle = L.circle(circleCenter, o2.cases * 10, circleOptions);
+                            const radius = o2.cases > 30000 ? o2.cases * 3 : o2.cases > 10000 ? o2.cases * 5 : o2.cases > 5000 ? o2.cases * 10 : o2.cases > 1000 ? o2.cases * 15 : o2.cases > 500 ? o2.cases * 20 : o2.cases > 100 ? o2.cases * 25 : o2.cases * 100
+                            const circle = L.circle(circleCenter, radius, circleOptions);
                             circle.bindPopup(`
                         <div id="mapPopup">
                         <img src=${o2.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
@@ -306,7 +307,7 @@ export default class CoronaCount extends React.Component {
         )
         this.setState({ choosenCountry: country });
         if (this.choosenCou[0] && this.choosenCou[0].latlng) {
-            this.props.map.setView(this.choosenCou[0].latlng, 6);
+            this.props.map.setView(this.choosenCou[0].latlng, 5);
             setTimeout(() => {
                 this.setState({ showLineChart: true });
             }, 1);
@@ -469,15 +470,15 @@ export default class CoronaCount extends React.Component {
                                 <p>Aktif: <span id="values">{this.state.choosenCountry.active}</span></p>
                                 <p>İyileşen: <span id="values">{this.state.choosenCountry.recovered}</span></p>
                                 <p>Durumu Kritik: <span id="values">{this.state.choosenCountry.critical}</span></p>
-                                <p>Bir Milyonda Vaka: <span id="values">{this.state.choosenCountry.casesPerOneMillion} kişi</span></p>
-                                <p>Test Sayısı: <span id="values">{this.state.choosenCountry.totalTests} kişi</span></p>
+                                <p>Bir Milyonda Vaka: <span id="values">{this.state.choosenCountry.casesPerOneMillion ? `${this.state.choosenCountry.casesPerOneMillion} kişi` : null}</span></p>
+                                <p>Test Sayısı: <span id="values">{this.state.choosenCountry.totalTests ? `${this.state.choosenCountry.totalTests} kişi` : null}</span></p>
                             </div>
                             <div className="column">
                                 <p>Ölüm: <span id="values">{this.state.choosenCountry.deaths}</span></p>
                                 <p>Bugünkü Ölümler: <span id="values">{this.state.choosenCountry.todayDeaths}</span></p>
                                 <p>Bugünkü Vakalar: <span id="values">{this.state.choosenCountry.todayCases}</span></p>
-                                <p>Bir Milyonda Ölen: <span id="values">{this.state.choosenCountry.deathsPerOneMillion} kişi</span></p>
-                                <p>Bir Milyonda Test: <span id="values">{this.state.choosenCountry.testsPerOneMillion} kişi</span></p>
+                                <p>Bir Milyonda Ölen: <span id="values">{this.state.choosenCountry.deathsPerOneMillion ? `${this.state.choosenCountry.deathsPerOneMillion} kişi` : null}</span></p>
+                                <p>Bir Milyonda Test: <span id="values">{this.state.choosenCountry.testsPerOneMillion ? `${this.state.choosenCountry.testsPerOneMillion} kişi` : null}</span></p>
                             </div>
                         </div>
                     </div>
