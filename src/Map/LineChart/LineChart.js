@@ -30,7 +30,7 @@ export default class Map extends React.Component {
             isCompareCountry: true
         };
         this.handleChange = this.handleChange.bind(this);
-        this.removeCompare = this.removeCompare.bind(this);
+        this.openFullscreen = this.openFullscreen.bind(this);
     }
 
     componentDidMount() {
@@ -385,20 +385,32 @@ export default class Map extends React.Component {
         this.setState({ graphicId: 0 });
     }
 
+    openFullscreen() {
+        var elem = document.getElementById("dashoardArea");
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
     render() {
         return (
             <div>
                 {this.state.isDataNull ? <p>Bu ülke için veri bulunamadı.</p> :
-                    <div className="dashoardArea">
+                    <div id="dashoardArea" className="dashoardArea">
                         {this.props.graphicId !== 1 ? <div id="compareCountry">
                             <p>Karşılarştırmak yapmak istediğiniz ülkeyi seçiniz.</p>
-                            <select id="countries" value="Karşılaştırma yapılacak ülkeyi seçiniz." onChange={this.handleChange}>
+                            <select id="countries" onChange={this.handleChange}>
                                 {/* <option selected disabled="disable"></option> */}
                                 {countries.map(country => (
                                     <option key={country.name} value={country.country_code}>{country.name}</option>
                                 ))}
                             </select>
-                            <Button id="removeCompare" variant="outline-primary" size="xs" onClick={this.removeCompare}>Kaldır</Button>
+                            <Button id="removeCompare" variant="outline-primary" size="xs" onClick={this.openFullscreen}>Kaldır</Button>
                             {this.state.isCompareCountry ? null : <p style={{ color: "red" }}>Seçtiğiniz ülkeye ait veri bulunamadı.</p>}
                         </div> : null}
                         {this.props.graphicId === 1 && this.state.graphicId !== 5 ? <div id="allIssues">
