@@ -12,6 +12,16 @@
     width: 500px;
 }
 
+#compareCountry {
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+#removeCompare {
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
 @media only screen and (max-width: 880px) {
     .mixed-chart {
         width: 95%;

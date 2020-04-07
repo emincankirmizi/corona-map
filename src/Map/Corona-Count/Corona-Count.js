@@ -222,11 +222,11 @@ export default class CoronaCount extends React.Component {
                         //     this.setState({ totalCountryCorona: this.state.totalCountryCorona })
                         // }
                         const countStyle = {
-                            "color": aa.cases > 30000 ? '#1a0000' : aa.cases > 10000 ? '#660000' : aa.cases > 5000 ? '#b30000' : aa.cases > 1000 ? '#ff0000' : aa.cases > 500 ? '#ff3333' : aa.cases > 100 ? '#ff8080' : '#ffcccc',
+                            "color": aa.active > 30000 ? '#1a0000' : aa.active > 10000 ? '#660000' : aa.active > 5000 ? '#b30000' : aa.active > 1000 ? '#ff0000' : aa.active > 500 ? '#ff3333' : aa.active > 100 ? '#ff8080' : '#ffcccc',
                             "weight": 0.1,
                             "opacity": 0.55
                         };
-                        if (aa.cases === 0) {
+                        if (aa.active === 0) {
                             const bb = o;
                             const nullStyle = {
                                 "color": '#ffffff',
@@ -253,7 +253,7 @@ export default class CoronaCount extends React.Component {
                                     <img src=${aa.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                                     <b>${aa.country}</b>
                                     <hr id="rowLine">
-                                    <p><span class="dotCasesMap"></span><b>Vaka:${aa.cases}</b></p>
+                                    <p><span class="dotCasesMap"></span><b>Vaka:${aa.active}</b></p>
                                     <p><span class="dotDeathsMap"></span><b>Ölüm:${aa.deaths}</b></p>
                                     <p><span class="dotRecoveredMap"></span><b>İyileşen:${aa.recovered}</b></p>
                                     </div>
@@ -269,7 +269,7 @@ export default class CoronaCount extends React.Component {
                 o2 => {
                     const aa = this.state.countries.find(o => o2.country === o.name)
                     if (aa) {
-                        if (o2.cases !== 0) {
+                        if (o2.active !== 0) {
                             o2.country_code = aa.country_code;
                             o2.flag = `https://www.countryflags.io/${aa.country_code}/flat/64.png`;
                             this.setState({ totalCountryCorona: this.state.totalCountryCorona })
@@ -280,13 +280,13 @@ export default class CoronaCount extends React.Component {
                                 fillOpacity: 0.3,
                                 weight: 3
                             }
-                            const radius = o2.cases > 30000 ? o2.cases * 3 : o2.cases > 10000 ? o2.cases * 5 : o2.cases > 5000 ? o2.cases * 10 : o2.cases > 1000 ? o2.cases * 15 : o2.cases > 500 ? o2.cases * 20 : o2.cases > 100 ? o2.cases * 25 : o2.cases * 100
+                            const radius = o2.active > 30000 ? o2.active * 3 : o2.active > 10000 ? o2.active * 5 : o2.active > 5000 ? o2.active * 10 : o2.active > 1000 ? o2.active * 15 : o2.active > 500 ? o2.active * 20 : o2.active > 100 ? o2.active * 25 : o2.active * 100
                             const circle = L.circle(circleCenter, radius, circleOptions);
                             circle.bindPopup(`
                         <div id="mapPopup">
                         <img src=${o2.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                         <b>${o2.country}</b>
-                        <p><span class="dotCasesMap"></span><b>Vaka:${o2.cases}</b></p>
+                        <p><span class="dotCasesMap"></span><b>Vaka:${o2.active}</b></p>
                         <p><span class="dotDeathsMap"></span><b>Ölüm:${o2.deaths}</b></p>
                         <p><span class="dotRecoveredMap"></span><b>İyileşen:${o2.recovered}</b></p>
                         </div>
@@ -409,6 +409,7 @@ export default class CoronaCount extends React.Component {
                         <span className="dotRecovered"></span><h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
                     </div>
                     <div id="mapPattern" className="map-design">
+                        <p style={{ color: "#A20B06", fontSize: "small" }}><i>Sınıflandırmalar aktif vakalara göre yapılmıştır.</i></p>
                         <span>Gösterim Şekli:</span>&nbsp;&nbsp;
                         <input type="radio" id="area" name="design" value="area" onChange={this.setArea} ></input>
                         <label htmlFor="area">Alan</label>&nbsp;&nbsp;
@@ -483,7 +484,7 @@ export default class CoronaCount extends React.Component {
                         </div>
                     </div>
                     <div id="dashboardContent" >
-                        <DropdownButton id="dropdown-basic-button" title="Grafikler">
+                        <DropdownButton id="dropdown-basic-button" variant="outline-primary" title="Grafikler">
                             <Dropdown.Item onClick={() => this.openGraphic(1)}>Genel</Dropdown.Item>
                             <Dropdown.Item onClick={() => this.openGraphic(2)}>Günlük Vaka</Dropdown.Item>
                             <Dropdown.Item onClick={() => this.openGraphic(3)}>Günlük Ölüm</Dropdown.Item>

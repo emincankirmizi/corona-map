@@ -173,23 +173,25 @@ export default class DayRange extends React.Component {
         } else {
             this.setState({ isDayNull: false });
             this.sort_by_key(this.state.allCountriesToday, 'cases');
-            this.state.allCountriesToday.forEach(e => {
-                if (e.country === "UAE") {
-                    e.country = "United Arab Emirates";
-                }
-                if (e.country === "Ivory Coast") {
-                    e.country = "Côte d'Ivoire";
-                }
-                if (e.country === "Congo") {
-                    e.country = "Congo (Brazzaville)";
-                }
-                if (e.country === "S. Korea") {
-                    e.country = "Korea, South";
-                }
-            })
-            const newCases = isInterval ? false : true;
-            this.props.onDaySet(this.state.allCountriesToday, newCases);
-            this.props.onAllData(this.state.totalToday);
+            if (Object.keys(this.state.allCountriesToday).length !== 0) {
+                this.state.allCountriesToday.forEach(e => {
+                    if (e.country === "UAE") {
+                        e.country = "United Arab Emirates";
+                    }
+                    if (e.country === "Ivory Coast") {
+                        e.country = "Côte d'Ivoire";
+                    }
+                    if (e.country === "Congo") {
+                        e.country = "Congo (Brazzaville)";
+                    }
+                    if (e.country === "S. Korea") {
+                        e.country = "Korea, South";
+                    }
+                })
+                const newCases = isInterval ? false : true;
+                this.props.onDaySet(this.state.allCountriesToday, newCases);
+                this.props.onAllData(this.state.totalToday);
+            }
         }
     }
 
