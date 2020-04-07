@@ -409,7 +409,6 @@ export default class CoronaCount extends React.Component {
                         <span className="dotRecovered"></span><h5>Toplam İyileşen: {this.state.totalCorona.recovered}</h5>
                     </div>
                     <div id="mapPattern" className="map-design">
-                        <p style={{ color: "#A20B06", fontSize: "small" }}><i>Sınıflandırmalar aktif vakalara göre yapılmıştır.</i></p>
                         <span>Gösterim Şekli:</span>&nbsp;&nbsp;
                         <input type="radio" id="area" name="design" value="area" onChange={this.setArea} ></input>
                         <label htmlFor="area">Alan</label>&nbsp;&nbsp;
