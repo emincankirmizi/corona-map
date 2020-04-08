@@ -27,7 +27,8 @@ export default class Map extends React.Component {
             ],
             isDataNull: false,
             choosenData: null,
-            isCompareCountry: true
+            isCompareCountry: true,
+            value: "defaultOpt"
         };
         this.handleChange = this.handleChange.bind(this);
         this.removeCompare = this.removeCompare.bind(this);
@@ -42,6 +43,8 @@ export default class Map extends React.Component {
 
     UNSAFE_componentWillReceiveProps() {
         this.setState({ graphicId: 0 })
+        this.setState({ value: "defaultOpt" });
+        this.setState({ isCompareCountry: true });
     }
 
     compareStrings(a, b) {
@@ -365,6 +368,7 @@ export default class Map extends React.Component {
 
     handleChange(e) {
         const compareCountry = e.target.value;
+        this.setState({ value: compareCountry });
         fetch(`https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?iso2=${compareCountry}&onlyCountries=false`)
             .then(response => this._parseJSON(response))
             .then(data => {
@@ -381,8 +385,9 @@ export default class Map extends React.Component {
     };
 
     removeCompare() {
-        console.log('deneme')
+        this.setState({ value: "defaultOpt" });
         this.setState({ graphicId: 0 });
+        this.setState({ isCompareCountry: true });
     }
 
     render() {
@@ -391,9 +396,8 @@ export default class Map extends React.Component {
                 {this.state.isDataNull ? <p>Bu ülke için veri bulunamadı.</p> :
                     <div className="dashoardArea">
                         {this.props.graphicId !== 1 ? <div id="compareCountry">
-                            <p>Karşılarştırmak yapmak istediğiniz ülkeyi seçiniz.</p>
-                            <select id="countries" onChange={this.handleChange}>
-                                {/* <option selected disabled="disable"></option> */}
+                            <select id="countries" value={this.state.value} onChange={this.handleChange}>
+                                <option value="defaultOpt" disabled="disable">Karşılarştırmak yapmak istediğiniz ülkeyi seçiniz.</option>
                                 {countries.map(country => (
                                     <option key={country.name} value={country.country_code}>{country.name}</option>
                                 ))}
