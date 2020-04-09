@@ -127,7 +127,7 @@ export default class Map extends React.Component {
                         this.setState({
                             options1: {
                                 chart: {
-                                    id: "basic-bar"
+                                    id: `genelDurum_${this.props.choosen}`
                                 },
                                 xaxis: {
                                     categories: xAxis
@@ -137,10 +137,10 @@ export default class Map extends React.Component {
                                     width: 4
                                 },
                                 title: {
-                                    text: "Genel Durum",
+                                    text: `Genel Durum ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
-                                    offsetY: 5,
+                                    offsetY: 20,
                                     style: {
                                         color: '#66a8ff'
                                     }
@@ -157,7 +157,7 @@ export default class Map extends React.Component {
                         this.setState({
                             options2: {
                                 chart: {
-                                    id: "basic-area"
+                                    id: `gunlukOlum_${this.props.choosen}`
                                 },
                                 xaxis: {
                                     categories: xAxis
@@ -176,10 +176,10 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: "Günlük Ölüm",
+                                    text: `Günlük Ölüm ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
-                                    offsetY: 5,
+                                    offsetY: 20,
                                     style: {
                                         color: '#66a8ff'
                                     }
@@ -196,7 +196,7 @@ export default class Map extends React.Component {
                         this.setState({
                             options3: {
                                 chart: {
-                                    id: "basic-area"
+                                    id: `gunlukIyılesen_${this.props.choosen}`
                                 },
                                 xaxis: {
                                     categories: xAxis
@@ -215,10 +215,10 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: "Günlük İyileşen",
+                                    text: `Günlük İyileşen ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
-                                    offsetY: 5,
+                                    offsetY: 20,
                                     style: {
                                         color: '#66a8ff'
                                     }
@@ -234,7 +234,7 @@ export default class Map extends React.Component {
                         this.setState({
                             options4: {
                                 chart: {
-                                    id: "basic-area"
+                                    id: `gunlukVaka_${this.props.choosen}`
                                 },
                                 xaxis: {
                                     categories: xAxis
@@ -253,10 +253,10 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: "Günlük Vaka",
+                                    text: `Günlük Vaka ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
-                                    offsetY: 5,
+                                    offsetY: 20,
                                     style: {
                                         color: '#66a8ff'
                                     }
@@ -341,7 +341,7 @@ export default class Map extends React.Component {
         this.setState({
             options5: {
                 chart: {
-                    id: "basic-bar"
+                    id: `${data1.countrycode.iso2}_${data2.countrycode.iso2}`
                 },
                 xaxis: {
                     categories: xAxis
@@ -351,10 +351,10 @@ export default class Map extends React.Component {
                     width: 4
                 },
                 title: {
-                    text: "Karşılaştırmalı Toplam " + name,
+                    text: `Karşılaştırmalı Toplam ${name}, ${data1.countrycode.iso2}- ${data2.countrycode.iso2}`,
                     align: 'left',
                     offsetX: 20,
-                    offsetY: 5,
+                    offsetY: 20,
                     style: {
                         color: '#66a8ff'
                     }
