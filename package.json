@@ -7,7 +7,7 @@
     "node": "10.15.3"
   },
   "dependencies": {
-    "apexcharts": "^3.17.0",
+    "apexcharts": "^3.18.1",
     "bootstrap": "^4.4.1",
     "leaflet": "^1.6.0",
     "react": "^16.12.0",
