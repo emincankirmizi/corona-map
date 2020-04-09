@@ -71,7 +71,9 @@ export default class CoronaCount extends React.Component {
         if (this.state.totalCountryCorona.length !== 0 && !dayRange) {
             const newCasesArray = [];
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
-                if (this.state.totalCountryCorona[i].country !== "World") {
+                if (this.state.totalCountryCorona[i].country !== "World" && this.state.totalCountryCorona[i].country !== "Europe"
+                    && this.state.totalCountryCorona[i].country !== "Africa" && this.state.totalCountryCorona[i].country !== "North America"
+                    && this.state.totalCountryCorona[i].country !== "Asia" && this.state.totalCountryCorona[i].country !== "Oceania") {
                     if (this.state.totalCountryCorona[i].cases < data[i].cases) {
                         newCasesArray.push({
                             "text": `${data[i].country} yeni vakalar açıkladı.Yeni sayı: ${data[i].cases}`,
@@ -430,27 +432,30 @@ export default class CoronaCount extends React.Component {
                             <p style={{ color: "red" }}>Veri sağlayıcısına bağlanılamadı.</p>
                         </div>
                         {this.state.totalCountryCorona.filter(e => {
-                            if (this.state.message) {
-                                return e.country.toLowerCase().includes(this.state.message.toLowerCase());
-                            } else {
+                            if (e.country !== "World" && e.country !== "Europe"
+                                && e.country !== "Africa" && e.country !== "North America"
+                                && e.country !== "Asia" && e.country !== "Oceania") {
+                                if (this.state.message) {
+                                    return e.country.toLowerCase().includes(this.state.message.toLowerCase());
+                                }
                                 return e;
                             }
+                            return null;
                         }).map(country => (
-                            country.country !== "World" ?
-                                <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
-                                    <img src={country.flag} style={{ float: "left", marginTop: "-6px", marginRight: "1px" }} width="30px" height="30px" alt="flag"></img><span style={{ fontSize: "15px" }}>{country.country}</span><span style={{ fontSize: "12px", color: "#E61904", float: "right" }}>{country.todayDeaths && country.todayDeaths !== 0 ? `+${country.todayDeaths}` : null}</span><span style={{ fontSize: "12px", color: "#0483D8", float: "right", marginRight: "3px" }}>{country.todayCases && country.todayCases !== 0 ? `+${country.todayCases}` : null}</span>
-                                    <hr id="rowLine"></hr>
-                                    <div className="title">
-                                        <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
-                                        {/* <p>Bugün: {country.todayCases}</p> */}
-                                        <p><span className="dotDeathsInfo"></span><span> Ölüm: {country.deaths}</span></p>
-                                        <p><span className="dotRecoveredInfo"></span><span>İyileşen: {country.recovered}</span></p>
-                                        <span>Detay için tıklayınız...</span>
-                                        {/* {this.state.onlyDeaths || this.state.allStutation ? <p>Durumu Kritik: {country.critical}</p> : null}
+                            <div className="country" key={country.country} onClick={() => this.chooseCountry(country)}>
+                                <img src={country.flag} style={{ float: "left", marginTop: "-6px", marginRight: "1px" }} width="30px" height="30px" alt="flag"></img><span style={{ fontSize: "15px" }}>{country.country}</span><span style={{ fontSize: "12px", color: "#E61904", float: "right" }}>{country.todayDeaths && country.todayDeaths !== 0 ? `+${country.todayDeaths}` : null}</span><span style={{ fontSize: "12px", color: "#0483D8", float: "right", marginRight: "3px" }}>{country.todayCases && country.todayCases !== 0 ? `+${country.todayCases}` : null}</span>
+                                <hr id="rowLine"></hr>
+                                <div className="title">
+                                    <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
+                                    {/* <p>Bugün: {country.todayCases}</p> */}
+                                    <p><span className="dotDeathsInfo"></span><span> Ölüm: {country.deaths}</span></p>
+                                    <p><span className="dotRecoveredInfo"></span><span>İyileşen: {country.recovered}</span></p>
+                                    <span>Detay için tıklayınız...</span>
+                                    {/* {this.state.onlyDeaths || this.state.allStutation ? <p>Durumu Kritik: {country.critical}</p> : null}
                 <p>Aktif: {country.active}</p> */}
-                                        {/* {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null} */}
-                                    </div>
-                                </div> : null
+                                    {/* {country.casesPerOneMillion ? <p>Bir Milyonda: {country.casesPerOneMillion} kişi</p> : null} */}
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
