@@ -73,7 +73,7 @@ export default class CoronaCount extends React.Component {
             for (let i = 0; i < this.state.totalCountryCorona.length; i++) {
                 if (this.state.totalCountryCorona[i].country !== "World" && this.state.totalCountryCorona[i].country !== "Europe"
                     && this.state.totalCountryCorona[i].country !== "Africa" && this.state.totalCountryCorona[i].country !== "North America"
-                    && this.state.totalCountryCorona[i].country !== "Asia" && this.state.totalCountryCorona[i].country !== "Oceania") {
+                    && this.state.totalCountryCorona[i].country !== "Asia" && this.state.totalCountryCorona[i].country !== "Oceania" && this.state.totalCountryCorona[i].country !== "South America") {
                     if (this.state.totalCountryCorona[i].cases < data[i].cases) {
                         newCasesArray.push({
                             "text": `${data[i].country} yeni vakalar açıkladı.Yeni sayı: ${data[i].cases}`,
@@ -434,7 +434,7 @@ export default class CoronaCount extends React.Component {
                         {this.state.totalCountryCorona.filter(e => {
                             if (e.country !== "World" && e.country !== "Europe"
                                 && e.country !== "Africa" && e.country !== "North America"
-                                && e.country !== "Asia" && e.country !== "Oceania") {
+                                && e.country !== "Asia" && e.country !== "Oceania" && e.country !== "South America") {
                                 if (this.state.message) {
                                     return e.country.toLowerCase().includes(this.state.message.toLowerCase());
                                 }
