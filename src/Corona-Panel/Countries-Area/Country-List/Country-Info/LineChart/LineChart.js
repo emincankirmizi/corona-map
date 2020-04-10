@@ -1,7 +1,7 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import './LineChart.css';
-import countries from '../coords/centerCountries.json';
+import countries from '../../../../../Map/coords/centerCountries.json';
 import { Button } from 'react-bootstrap';
 
 export default class Map extends React.Component {

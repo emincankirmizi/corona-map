@@ -213,12 +213,20 @@ export default class DayRange extends React.Component {
 
     render() {
         return (
-            <div id="dayRange">
-                <div>
-                    <h3>{this.state.newDay}</h3>
-                    {this.state.isDayNull ? <p style={{ color: "red" }} >Seçili güne ait veri bulunamadı.</p> : null}
+            <div id="timeSelector">
+                <div className="loader"></div>
+                <div id="resWait">
+                    <p>Zamanlayıcı için veri bekleniyor.</p>
                 </div>
-                <input type="range" min="0" max={this.state.totalDays} className="slider" id="daySlider" onChange={this.handleChange}></input>
+                <div id="rangeDiv">
+                    <div id="dayRange">
+                        <div>
+                            <h3>{this.state.newDay}</h3>
+                            {this.state.isDayNull ? <p style={{ color: "red" }} >Seçili güne ait veri bulunamadı.</p> : null}
+                        </div>
+                        <input type="range" min="0" max={this.state.totalDays} className="slider" id="daySlider" onChange={this.handleChange}></input>
+                    </div>
+                </div>
             </div>
         )
     }

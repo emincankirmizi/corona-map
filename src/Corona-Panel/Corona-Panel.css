@@ -8,86 +8,8 @@
     background-color: #111;
     transition: 0.5s;
     overflow-x: auto;
-    padding-top: 25px;
     padding-bottom: 5px;
     color: white;
-  }
-
-  .infoPanel {
-    width: 520px;
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 350px;
-    background-color: rgb(72, 126, 126);
-    transition: 0.5s;
-    overflow-x: auto;
-    color: white;
-    overflow-x: hidden;
-    background-color:rgb(15, 14, 14);
-    opacity: 0.8;
-  }
-
-  .column {
-    float: left;
-    width: 50%;
-    padding: 10px;
-  }
-
-  .row:after {
-    display: table;
-    clear: both;
-  }
-
-  #values {
-    color: white
-  }
-
-  .infoPanelTitle {
-    position: fixed;
-    width: 520px;
-    padding-top: 25px;
-    padding-bottom: 0px;
-    padding-left: 2%;
-    background-color: black;
-  }
-
-  .infoPanelContent {
-    margin-top: 10%;
-    padding-top: 15px;
-    padding-bottom: 10px;
-    padding-left: 10%;
-    background-color:rgb(15, 14, 14);
-    color: #66a8ff;
-    width: 100%;
-  }
-
-  .country {
-    font: icon;
-    padding-top: 4%;
-    padding-bottom: 4%;
-    margin-left: 15%;
-    margin-bottom: 2%;
-    background-color: #3a0c0c;
-    color: white;
-    margin-right: 15%;
-    padding-left: 10%;
-    padding-right: 7%;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .title {
-      margin-left: 7%;
-      font-size: 15px;
-      margin-top: 5%;
-  }
-
-  .all {
-      margin-top: 7px;
-      margin-bottom: 25px;
-      font: caption;
-      text-align: center;
   }
 
   .list {
@@ -154,14 +76,6 @@
   text-align: center;
 }
 
-.closeInfoPanel {
-  font-size: 20px;
-  position: fixed;
-  cursor: pointer;
-  float: right;
-  z-index: 9999;
-}
-
 .closeNewPanel{
   font-size: 20px;
     position: fixed;
@@ -175,7 +89,7 @@
   margin-left: 5px;
   display: inline-block;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 99999;
   position: absolute;
 }
 
@@ -197,11 +111,6 @@
 .change .bar3 {
   -webkit-transform: rotate(45deg) translate(-8px, -8px);
   transform: rotate(45deg) translate(-8px, -8px);
-}
-
-.map-design {
-  text-align: center;
-  margin-bottom: 5px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -232,59 +141,8 @@
   }
 }
 
-  .search-box {
-    text-align: center;
-    margin-bottom: 5%;
-  }
-
   #dropdown-basic-button {
     margin-left: 3%;
-  }
-
-  #rowLine {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 0;
-    border-top: 1px solid rgba(255,255,255, .4);
-  }
-
-  .allInfo {
-    padding-left: 7%;
-    padding-right: 7%;
-    margin-bottom: 20px;
-  }
-
-  .dotCases {
-    height: 15px;
-    width: 15px;
-    background-color: #0483D8;
-    border-radius: 50%;
-    margin-top: 5px;
-    margin-left: 10%;
-    margin-right: 5%;
-    float: left;
-  }
-
-  .dotDeaths {
-    height: 15px;
-    width: 15px;
-    background-color: #E61904;
-    border-radius: 50%;
-    margin-top: 5px;
-    margin-left: 10%;
-    margin-right: 5%;
-    float: left;
-  }
-
-  .dotRecovered {
-    height: 15px;
-    width: 15px;
-    background-color: #04D816;
-    border-radius: 50%;
-    margin-top: 5px;
-    margin-left: 10%;
-    margin-right: 5%;
-    float: left;
   }
 
   .dotCasesMap {
@@ -316,33 +174,6 @@
     border-radius: 50%;
     margin-top: 2px;
     margin-left: 10%;
-    margin-right: 5%;
-    float: left;
-  }
-
-  .dotCasesInfo {
-    height: 15px;
-    width: 15px;
-    background-color: #0483D8;
-    border-radius: 50%;
-    margin-right: 4%;
-    float: left;
-  }
-
-  .dotDeathsInfo {
-    height: 15px;
-    width: 15px;
-    background-color: #E61904;
-    border-radius: 50%;
-    margin-right: 4%;
-    float: left;
-  }
-
-  .dotRecoveredInfo {
-    height: 15px;
-    width: 15px;
-    background-color: #04D816;
-    border-radius: 50%;
     margin-right: 5%;
     float: left;
   }

@@ -1,0 +1,58 @@
+
+  .infoPanel {
+    width: 520px;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 350px;
+    background-color: rgb(72, 126, 126);
+    transition: 0.5s;
+    overflow-x: auto;
+    color: white;
+    overflow-x: hidden;
+    background-color:rgb(15, 14, 14);
+    opacity: 0.8;
+  }
+  
+  .column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+  }
+
+  .row:after {
+    display: table;
+    clear: both;
+  }
+
+  
+  #values {
+    color: white
+  }
+
+  .infoPanelTitle {
+    position: fixed;
+    width: 520px;
+    padding-top: 25px;
+    padding-bottom: 0px;
+    padding-left: 2%;
+    background-color: black;
+  }
+
+  .infoPanelContent {
+    margin-top: 10%;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    padding-left: 10%;
+    background-color:rgb(15, 14, 14);
+    color: #66a8ff;
+    width: 100%;
+  }
+
+  .closeInfoPanel {
+    font-size: 20px;
+    position: fixed;
+    cursor: pointer;
+    float: right;
+    z-index: 9999;
+  }

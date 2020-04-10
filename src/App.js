@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Map from './Map/Map'
-import CoronaCount from './Map/Corona-Count/Corona-Count'
+import CoronaPanel from './Corona-Panel/Corona-Panel'
 import Legend from './Map/Legend/Legend'
 
 class App extends Component {
@@ -15,9 +15,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Map onMapSet={this.getMap}></Map>
-        <CoronaCount map={this.state.map}></CoronaCount>
-        <Legend></Legend>
+        <Map onMapSet={this.getMap} />
+        <CoronaPanel map={this.state.map} />
+        <Legend />
       </div>
     );
   }

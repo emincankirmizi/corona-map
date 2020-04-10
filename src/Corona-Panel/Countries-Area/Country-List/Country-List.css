@@ -1,0 +1,55 @@
+.country {
+    font: icon;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    margin-left: 15%;
+    margin-bottom: 2%;
+    background-color: #3a0c0c;
+    color: white;
+    margin-right: 15%;
+    padding-left: 10%;
+    padding-right: 7%;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  
+  #rowLine {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid rgba(255,255,255, .4);
+  }
+
+  .dotCasesInfo {
+    height: 15px;
+    width: 15px;
+    background-color: #0483D8;
+    border-radius: 50%;
+    margin-right: 4%;
+    float: left;
+  }
+
+  .dotDeathsInfo {
+    height: 15px;
+    width: 15px;
+    background-color: #E61904;
+    border-radius: 50%;
+    margin-right: 4%;
+    float: left;
+  }
+
+  .dotRecoveredInfo {
+    height: 15px;
+    width: 15px;
+    background-color: #04D816;
+    border-radius: 50%;
+    margin-right: 5%;
+    float: left;
+  }
+
+  .title {
+    margin-left: 7%;
+    font-size: 15px;
+    margin-top: 5%;
+}
