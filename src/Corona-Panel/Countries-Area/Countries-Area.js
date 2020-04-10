@@ -31,7 +31,7 @@ export default class CountriesArea extends React.Component {
         return (
             <div id="countriesArea">
                 <SearchBox message={this.setMessage} />
-                <CountryList totalCountryCorona={this.state.totalCountryCorona} message={this.state.message} map={this.props.map} showPanel={this.props.showPanel} deliveryInfoParams={this.setParams} />
+                <CountryList totalCountryCorona={this.props.totalCountryCorona} message={this.state.message} map={this.props.map} showPanel={this.props.showPanel} deliveryInfoParams={this.setParams} />
             </div>
         )
     }
