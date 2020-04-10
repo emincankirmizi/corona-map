@@ -10,20 +10,27 @@ export default class CountryInfo extends React.Component {
         this.state = {
             openInfo: false,
             openGraphic: 1,
+            close: true
         }
     }
 
-    UNSAFE_componentWillReceiveProps() {
+    componentDidMount() {
         this.setState({ graphicId: 1 });
+        this.setState({ close: true });
     }
 
     openGraphic(graphicId) {
         this.setState({ graphicId: graphicId });
     }
 
+    componentWillUnmount() {
+        this.setState({ graphicId: 1 });
+        this.setState({ close: false })
+    }
+
     render() {
         return (
-            <div className="infoPanel" style={{ display: this.state.openInfo ? 'block' : 'none' }}>
+            <div className="infoPanel">
                 <span className="closeInfoPanel">&times;</span>
                 <div className="infoPanelTitle">
                     <img src={this.props.choosenCountry.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img><h5 style={{ marginTop: "2px" }}>{this.props.choosenCountry.country} (Toplam: {this.props.choosenCountry.cases})</h5>
@@ -53,7 +60,7 @@ export default class CountryInfo extends React.Component {
                         <Dropdown.Item onClick={() => this.openGraphic(3)}>Günlük Ölüm</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.openGraphic(4)}>Günlük İyileşme</Dropdown.Item>
                     </DropdownButton>
-                    {this.props.showLineChart ? <LineChart choosen={this.props.choosenCou[0].country_code} graphicId={this.state.graphicId}></LineChart> : null}
+                    {this.state.close ? <LineChart choosen={this.props.choosenCou[0].country_code} graphicId={this.state.graphicId}></LineChart> : null}
                 </div>
                 <p style={{ textAlign: "center", color: "#66a8ff" }}>Grafik Veri Sağlayıcısı: Johns Hopkins University</p>
             </div>

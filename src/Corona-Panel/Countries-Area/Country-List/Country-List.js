@@ -1,6 +1,5 @@
 import React from 'react';
 import './Country-List.css';
-import CountryInfo from './Country-Info/Country-Info';
 import countries from '../../../Map/coords/centerCountries.json';
 
 export default class CountryList extends React.Component {
@@ -11,13 +10,12 @@ export default class CountryList extends React.Component {
             choosenCountry: [],
             choosenCou: [],
             countries: countries,
-            showLineChart: false,
+            openInfo: true,
         }
     }
 
     chooseCountry(country) {
-        this.setState({ showLineChart: false });
-        document.getElementsByClassName('infoPanel')[0].style.display = 'none';
+        this.setState({ openInfo: false });
         this.setState({
             choosenCou: this.state.countries.filter(
                 c => {
@@ -31,13 +29,13 @@ export default class CountryList extends React.Component {
             if (this.state.choosenCou[0] && this.state.choosenCou[0].latlng) {
                 this.props.map.setView(this.state.choosenCou[0].latlng, 5);
                 setTimeout(() => {
-                    this.setState({ showLineChart: true });
+                    this.setState({ openInfo: true }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
                 }, 1);
             }
-            document.getElementsByClassName('infoPanel')[0].style.display = 'block';
             this.props.map.on('click', (e) => {
-                this.setState({ showLineChart: false });
-                document.getElementsByClassName('infoPanel')[0].style.display = 'none';
+                if (this.state.openInfo) {
+                    this.setState({ openInfo: false }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
+                }
             });
         })
     }
@@ -73,7 +71,6 @@ export default class CountryList extends React.Component {
                         </div>
                     )) : null}
                 </div>
-                <CountryInfo choosenCountry={this.state.choosenCountry} showLineChart={this.state.showLineChart} choosenCou={this.state.choosenCou} />
             </div>
         )
     }

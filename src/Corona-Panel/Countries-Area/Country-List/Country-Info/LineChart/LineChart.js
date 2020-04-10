@@ -41,11 +41,11 @@ export default class Map extends React.Component {
         })
     }
 
-    UNSAFE_componentWillReceiveProps() {
-        this.setState({ graphicId: 0 })
-        this.setState({ value: "defaultOpt" });
-        this.setState({ isCompareCountry: true });
-    }
+    // UNSAFE_componentWillReceiveProps() {
+    //     this.setState({ graphicId: 0 })
+    //     this.setState({ value: "defaultOpt" });
+    //     this.setState({ isCompareCountry: true });
+    // }
 
     compareStrings(a, b) {
         // Assuming you want case-insensitive comparison

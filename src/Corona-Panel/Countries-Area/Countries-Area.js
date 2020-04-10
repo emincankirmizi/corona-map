@@ -23,11 +23,15 @@ export default class CountriesArea extends React.Component {
         this.setState({ message: message })
     }
 
+    setParams = (openInfo, choosenCountry, choosenCou) => {
+        this.props.setInfoParams(openInfo, choosenCountry, choosenCou);
+    }
+
     render() {
         return (
             <div id="countriesArea">
                 <SearchBox message={this.setMessage} />
-                <CountryList totalCountryCorona={this.state.totalCountryCorona} message={this.state.message} map={this.props.map} />
+                <CountryList totalCountryCorona={this.state.totalCountryCorona} message={this.state.message} map={this.props.map} showPanel={this.props.showPanel} deliveryInfoParams={this.setParams} />
             </div>
         )
     }

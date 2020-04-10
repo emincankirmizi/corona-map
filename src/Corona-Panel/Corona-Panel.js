@@ -7,6 +7,7 @@ import TotalArea from './Total-Area/Total-Area'
 import MapPattern from './Map-Pattern/Map-Pattern'
 import PanelTitle from './Panel-Title/Panel-Title'
 import CountriesArea from './Countries-Area/Countries-Area'
+import CountryInfo from './Countries-Area/Country-List/Country-Info/Country-Info';
 require('bootstrap/dist/css/bootstrap.css');
 
 export default class CoronaPanel extends React.Component {
@@ -27,7 +28,7 @@ export default class CoronaPanel extends React.Component {
             message: null,
             currentData: null,
             newDay: [],
-            continentCorona: []
+            continentCorona: [],
         }
     }
 
@@ -47,10 +48,6 @@ export default class CoronaPanel extends React.Component {
         } else {
             document.getElementById("panel").style.display = "none";
         }
-        const closeInfoBtn = document.getElementsByClassName('closeInfoPanel')[0];
-        closeInfoBtn.addEventListener("click", function () {
-            document.getElementsByClassName('infoPanel')[0].style.display = 'none';
-        });
 
         const closeNewBtn = document.getElementsByClassName('closeNewPanel')[0];
         closeNewBtn.addEventListener("click", function () {
@@ -198,7 +195,6 @@ export default class CoronaPanel extends React.Component {
                 document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
                 document.getElementsByClassName("infoPanel")[0].style.height = "100%";
             }
-
         } else {
             document.getElementById("panel").style.display = "none";
             if (document.getElementsByClassName('infoPanel')[0].style.display !== "none") {
@@ -231,6 +227,20 @@ export default class CoronaPanel extends React.Component {
         this.setAllData(total);
     }
 
+    setInfoParams = (openInfo, choosenCountry, choosenCou) => {
+        this.setState({ openInfo: openInfo }, () => {
+            if (this.state.openInfo) {
+                const closeInfoBtn = document.getElementsByClassName('closeInfoPanel')[0];
+                const btnListener = closeInfoBtn.addEventListener("click", () => {
+                    this.setState({ openInfo: false });
+                    closeInfoBtn.removeEventListener("click", btnListener)
+                });
+            }
+        });
+        this.setState({ choosenCountry: choosenCountry });
+        this.setState({ choosenCou: choosenCou });
+    }
+
     render() {
         return (
             <div>
@@ -244,8 +254,9 @@ export default class CoronaPanel extends React.Component {
                     <TotalArea continentCorona={this.state.continentCorona} totalCorona={this.state.totalCorona} />
                     <MapPattern totalCountryCorona={this.state.totalCountryCorona} map={this.props.map} />
                     <DayRange onDaySet={this.setDay} onAllData={this.setAllCountries}></DayRange>
-                    <CountriesArea totalCountryCorona={this.state.totalCountryCorona} map={this.props.map} />
+                    <CountriesArea totalCountryCorona={this.state.totalCountryCorona} map={this.props.map} setInfoParams={this.setInfoParams} />
                 </div>
+                {this.state.openInfo ? <CountryInfo choosenCountry={this.state.choosenCountry} choosenCou={this.state.choosenCou} /> : null}
                 <div className="newCases" style={{ display: this.state.openNewCases ? 'block' : 'none' }}>
                     <span className="closeNewPanel">&times;</span>
                     <div className="newCasesTitle">
