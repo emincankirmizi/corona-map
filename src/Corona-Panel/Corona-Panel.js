@@ -24,10 +24,12 @@ export default class CoronaPanel extends React.Component {
             countries: countries,
             newCases: [],
             openNewCases: false,
+            openInfo: false,
             isMobile: false,
             message: null,
             currentData: null,
             newDay: [],
+            showLineChart: false,
             continentCorona: [],
         }
     }
@@ -185,20 +187,22 @@ export default class CoronaPanel extends React.Component {
         document.getElementsByClassName('hamburger')[0].classList.toggle('change');
         if (document.getElementById("panel").style.display === "none") {
             document.getElementById("panel").style.display = "block";
-            if (window.innerWidth > 600) {
-                document.getElementsByClassName("infoPanel")[0].style.left = "350px";
-                document.getElementsByClassName("infoPanel")[0].style.top = "0px";
-            } else {
-                document.getElementsByClassName("infoPanel")[0].style.width = "100%";
-                document.getElementsByClassName("infoPanel")[0].style.left = "0px";
-                document.getElementsByClassName("infoPanel")[0].style.top = "0px";
-                document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
-                document.getElementsByClassName("infoPanel")[0].style.height = "100%";
+            if (this.state.openInfo) {
+                if (window.innerWidth > 769) {
+                    document.getElementsByClassName("infoPanel")[0].style.left = "350px";
+                    document.getElementsByClassName("infoPanel")[0].style.top = "0px";
+                } else {
+                    document.getElementsByClassName("infoPanel")[0].style.width = "100%";
+                    document.getElementsByClassName("infoPanel")[0].style.left = "0px";
+                    document.getElementsByClassName("infoPanel")[0].style.top = "0px";
+                    document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
+                    document.getElementsByClassName("infoPanel")[0].style.height = "100%";
+                }
             }
         } else {
             document.getElementById("panel").style.display = "none";
-            if (document.getElementsByClassName('infoPanel')[0].style.display !== "none") {
-                if (window.innerWidth < 600) {
+            if (this.state.openInfo) {
+                if (window.innerWidth < 769) {
                     document.getElementsByClassName('infoPanel')[0].style.display = "none"
                 } else {
                     document.getElementsByClassName("infoPanel")[0].style.left = "0px";
@@ -230,9 +234,11 @@ export default class CoronaPanel extends React.Component {
     setInfoParams = (openInfo, choosenCountry, choosenCou) => {
         this.setState({ openInfo: openInfo }, () => {
             if (this.state.openInfo) {
+                this.setState({showLineChart: true});
                 const closeInfoBtn = document.getElementsByClassName('closeInfoPanel')[0];
                 const btnListener = closeInfoBtn.addEventListener("click", () => {
                     this.setState({ openInfo: false });
+                    this.setState({showLineChart: false});
                     closeInfoBtn.removeEventListener("click", btnListener)
                 });
             }
@@ -256,7 +262,7 @@ export default class CoronaPanel extends React.Component {
                     <DayRange onDaySet={this.setDay} onAllData={this.setAllCountries}></DayRange>
                     <CountriesArea totalCountryCorona={this.state.totalCountryCorona} map={this.props.map} setInfoParams={this.setInfoParams} />
                 </div>
-                {this.state.openInfo ? <CountryInfo choosenCountry={this.state.choosenCountry} choosenCou={this.state.choosenCou} /> : null}
+                {this.state.openInfo ? <CountryInfo choosenCountry={this.state.choosenCountry} choosenCou={this.state.choosenCou} showLineChart={this.state.showLineChart}/> : null}
                 <div className="newCases" style={{ display: this.state.openNewCases ? 'block' : 'none' }}>
                     <span className="closeNewPanel">&times;</span>
                     <div className="newCasesTitle">

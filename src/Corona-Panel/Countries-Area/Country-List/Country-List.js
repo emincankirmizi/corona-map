@@ -15,29 +15,31 @@ export default class CountryList extends React.Component {
     }
 
     chooseCountry(country) {
-        this.setState({ openInfo: false });
-        this.setState({
-            choosenCou: this.state.countries.filter(
-                c => {
-                    if (c.name === country.country)
-                        return c;
-                    return null;
+        this.setState({ openInfo: false }, () => {
+            this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou);
+            this.setState({
+                choosenCou: this.state.countries.filter(
+                    c => {
+                        if (c.name === country.country)
+                            return c;
+                        return null;
+                    }
+                )
+            }, () => {
+                this.setState({ choosenCountry: country });
+                if (this.state.choosenCou[0] && this.state.choosenCou[0].latlng) {
+                    this.props.map.setView(this.state.choosenCou[0].latlng, 5);
+                    setTimeout(() => {
+                        this.setState({ openInfo: true }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
+                    }, 1);
                 }
-            )
-        }, () => {
-            this.setState({ choosenCountry: country });
-            if (this.state.choosenCou[0] && this.state.choosenCou[0].latlng) {
-                this.props.map.setView(this.state.choosenCou[0].latlng, 5);
-                setTimeout(() => {
-                    this.setState({ openInfo: true }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
-                }, 1);
-            }
-            this.props.map.on('click', (e) => {
-                if (this.state.openInfo) {
-                    this.setState({ openInfo: false }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
-                }
-            });
-        })
+                this.props.map.on('click', (e) => {
+                    if (this.state.openInfo) {
+                        this.setState({ openInfo: false }, () => { this.props.deliveryInfoParams(this.state.openInfo, this.state.choosenCountry, this.state.choosenCou); });
+                    }
+                });
+            })
+        });
     }
 
     render() {

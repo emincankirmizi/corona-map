@@ -17,6 +17,16 @@ export default class CountryInfo extends React.Component {
     componentDidMount() {
         this.setState({ graphicId: 1 });
         this.setState({ close: true });
+        if (window.innerWidth > 769) {
+            document.getElementsByClassName("infoPanel")[0].style.left = "350px";
+            document.getElementsByClassName("infoPanel")[0].style.top = "0px";
+        } else {
+            document.getElementsByClassName("infoPanel")[0].style.width = "100%";
+            document.getElementsByClassName("infoPanel")[0].style.left = "0px";
+            document.getElementsByClassName("infoPanel")[0].style.top = "0px";
+            document.getElementsByClassName("infoPanel")[0].style.borderRadius = "5px";
+            document.getElementsByClassName("infoPanel")[0].style.height = "100%";
+        }
     }
 
     openGraphic(graphicId) {
@@ -60,7 +70,7 @@ export default class CountryInfo extends React.Component {
                         <Dropdown.Item onClick={() => this.openGraphic(3)}>Günlük Ölüm</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.openGraphic(4)}>Günlük İyileşme</Dropdown.Item>
                     </DropdownButton>
-                    {this.state.close ? <LineChart choosen={this.props.choosenCou[0].country_code} graphicId={this.state.graphicId}></LineChart> : null}
+                    {this.props.showLineChart ? <LineChart choosen={this.props.choosenCou[0].country_code} graphicId={this.state.graphicId}></LineChart> : null}
                 </div>
                 <p style={{ textAlign: "center", color: "#66a8ff" }}>Grafik Veri Sağlayıcısı: Johns Hopkins University</p>
             </div>
