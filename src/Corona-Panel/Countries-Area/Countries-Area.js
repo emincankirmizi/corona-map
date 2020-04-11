@@ -30,8 +30,8 @@ export default class CountriesArea extends React.Component {
     render() {
         return (
             <div id="countriesArea">
-                <SearchBox message={this.setMessage} />
-                <CountryList totalCountryCorona={this.props.totalCountryCorona} message={this.state.message} map={this.props.map} showPanel={this.props.showPanel} deliveryInfoParams={this.setParams} />
+                <SearchBox message={this.setMessage} languageCode={this.props.languageCode} />
+                <CountryList totalCountryCorona={this.props.totalCountryCorona} message={this.state.message} map={this.props.map} showPanel={this.props.showPanel} deliveryInfoParams={this.setParams} languageCode={this.props.languageCode} />
             </div>
         )
     }

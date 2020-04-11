@@ -3,6 +3,7 @@ import './Map-Pattern.css';
 import countries from '../../Map/coords/centerCountries.json';
 import L from 'leaflet';
 import coords from '../../Map/coords/coords.json';
+import language from '../../language';
 
 export default class MapPattern extends React.Component {
 
@@ -21,6 +22,10 @@ export default class MapPattern extends React.Component {
         if (this.props.totalCountryCorona && this.props.totalCountryCorona.length !== 0) {
             this.setCountryDataOnMap();
         }
+    }
+
+    componentDidMount() {
+        document.getElementById('area').checked = true;
     }
 
     setCountryDataOnMap() {
@@ -95,9 +100,9 @@ export default class MapPattern extends React.Component {
                                     <img src=${country.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                                     <b>${country.country}</b>
                                     <hr id="rowLine">
-                                    <p><span class="dotCasesMap"></span><b>Vaka:${country.cases}</b></p>
-                                    <p><span class="dotDeathsMap"></span><b>Ölüm:${country.deaths}</b></p>
-                                    <p><span class="dotRecoveredMap"></span><b>İyileşen:${country.recovered}</b></p>
+                                    <p><span class="dotCasesMap"></span><b>${language[this.props.languageCode].cases}: ${country.cases}</b></p>
+                                    <p><span class="dotDeathsMap"></span><b>${language[this.props.languageCode].deaths}: ${country.deaths}</b></p>
+                                    <p><span class="dotRecoveredMap"></span><b>${language[this.props.languageCode].recovered}: ${country.recovered}</b></p>
                                     </div>
                                     `);
                                 }
@@ -128,9 +133,10 @@ export default class MapPattern extends React.Component {
                         <div id="mapPopup">
                         <img src=${country.flag} style={{ float: "left" }} width="30px" height="30px" alt="flag"></img>
                         <b>${country.country}</b>
-                        <p><span class="dotCasesMap"></span><b>Vaka:${country.cases}</b></p>
-                        <p><span class="dotDeathsMap"></span><b>Ölüm:${country.deaths}</b></p>
-                        <p><span class="dotRecoveredMap"></span><b>İyileşen:${country.recovered}</b></p>
+                        <hr id="rowLine">
+                        <p><span class="dotCasesMap"></span><b>${language[this.props.languageCode].cases}: ${country.cases}</b></p>
+                        <p><span class="dotDeathsMap"></span><b>${language[this.props.languageCode].deaths}: ${country.deaths}</b></p>
+                        <p><span class="dotRecoveredMap"></span><b>${language[this.props.languageCode].recovered}: ${country.recovered}</b></p>
                         </div>
                         `);
                             circle.addTo(this.props.map);
@@ -158,11 +164,11 @@ export default class MapPattern extends React.Component {
     render() {
         return (
             <div id="mapPattern" className="map-design">
-                <span>Gösterim Şekli:</span>&nbsp;&nbsp;
+                <span>{language[this.props.languageCode].notation}:</span>&nbsp;&nbsp;
                 <input type="radio" id="area" name="design" value="area" onChange={this.setArea} ></input>
-                <label htmlFor="area">Alan</label>&nbsp;&nbsp;
+                <label htmlFor="area">{language[this.props.languageCode].area}</label>&nbsp;&nbsp;
                 <input type="radio" id="circle" name="design" value="circle" onChange={this.setCircle} ></input>
-                <label htmlFor="circle">Daire</label>
+                <label htmlFor="circle">{language[this.props.languageCode].circle}</label>
             </div>
         )
     }

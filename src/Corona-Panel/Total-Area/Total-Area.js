@@ -1,5 +1,6 @@
 import React from 'react';
 import './Total-Area.css';
+import language from '../../language';
 
 export default class TotalArea extends React.Component {
 
@@ -56,15 +57,15 @@ export default class TotalArea extends React.Component {
                     })}
                 </div> : null} */}
                 <div id="totalCasesArea">
-                    <span id="dotCases" className="dotCases" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>Toplam Vaka: {this.props.totalCorona.cases}</h5>
+                    <span id="dotCases" className="dotCases" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>{language[this.props.languageCode].total} {language[this.props.languageCode].cases}: {this.props.totalCorona.cases}</h5>
                     <hr id="rowLine"></hr>
                 </div>
                 <div id="totalDeathsArea">
-                    <span id="dotDeaths" className="dotDeaths" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>Toplam Ölüm: {this.props.totalCorona.deaths}</h5>
+                    <span id="dotDeaths" className="dotDeaths" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>{language[this.props.languageCode].total} {language[this.props.languageCode].deaths}: {this.props.totalCorona.deaths}</h5>
                     <hr id="rowLine"></hr>
                 </div>
                 <div id="totalRecoveredArea">
-                    <span id="dotRecovered" className="dotRecovered" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>Toplam İyileşen: {this.props.totalCorona.recovered}</h5>
+                    <span id="dotRecovered" className="dotRecovered" onMouseOverCapture={this._onMouseMove.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}></span><h5>{language[this.props.languageCode].total} {language[this.props.languageCode].recovered}: {this.props.totalCorona.recovered}</h5>
                 </div>
             </div>
         )

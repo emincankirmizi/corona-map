@@ -12,6 +12,10 @@
     color: white;
   }
 
+  #localArea {
+    float: right
+  }
+
   .list {
     display: inline-flex;
     padding-left: 20%;
@@ -51,36 +55,8 @@
   background: #555; 
 }
 
-.newCases {
-  height: 250px;
-  width: 40%;
-  position: absolute;
-  z-index: 100001;
-  top: 5px;
-  left: 35%;
-  background-color: #111;
-  transition: 0.5s;
-  overflow-x: auto;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border-radius: 5%;
-  color: white;
-}
-
-.newCasesTitle {
-  color: #66a8ff;
-  text-align: center;
-}
-
 .descCases {
   text-align: center;
-}
-
-.closeNewPanel{
-  font-size: 20px;
-    position: fixed;
-    cursor: pointer;
-    float: right;
 }
 
 .hamburger {
@@ -122,10 +98,3 @@
   #dropdown-basic-button {
     margin-left: 3%;
   }
-
-@media only screen and (max-width: 718px) {
-  .newCases {
-    width: 90%;
-    left: 5%;
-  }
-}

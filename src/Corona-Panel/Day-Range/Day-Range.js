@@ -1,5 +1,6 @@
 import React from 'react';
 import './Day-Range.css';
+import language from '../../language';
 
 export default class DayRange extends React.Component {
 
@@ -216,7 +217,7 @@ export default class DayRange extends React.Component {
             <div id="timeSelector">
                 <div className="loader"></div>
                 <div id="resWait">
-                    <p>Zamanlayıcı için veri bekleniyor.</p>
+                    <p>{language[this.props.languageCode].dayRange}</p>
                 </div>
                 <div id="rangeDiv">
                     <div id="dayRange">

@@ -1,6 +1,7 @@
 import React from 'react';
 import './Country-List.css';
 import countries from '../../../Map/coords/centerCountries.json';
+import language from '../../../language'
 
 export default class CountryList extends React.Component {
 
@@ -47,7 +48,7 @@ export default class CountryList extends React.Component {
             <div>
                 <div className="countries">
                     <div id="covidAPIWait">
-                        <p style={{ color: "red" }}>Veri sağlayıcısına bağlanılamadı.</p>
+                        <p style={{ color: "red" }}>{language[this.props.languageCode].connectionError}</p>
                     </div>
                     {this.props.totalCountryCorona ? this.props.totalCountryCorona.filter(e => {
                         if (e.country !== "World" && e.country !== "Europe"
@@ -65,10 +66,10 @@ export default class CountryList extends React.Component {
                             <img src={country.flag} style={{ float: "left", marginTop: "-6px", marginRight: "1px" }} width="30px" height="30px" alt="flag"></img><span style={{ fontSize: "15px" }}>{country.country}</span><span style={{ fontSize: "12px", color: "#E61904", float: "right" }}>{country.todayDeaths && country.todayDeaths !== 0 ? `+${country.todayDeaths}` : null}</span><span style={{ fontSize: "12px", color: "#0483D8", float: "right", marginRight: "3px" }}>{country.todayCases && country.todayCases !== 0 ? `+${country.todayCases}` : null}</span>
                             <hr id="rowLine"></hr>
                             <div className="title">
-                                <p><span className="dotCasesInfo"></span><span> Vaka: {country.cases}</span></p>
-                                <p><span className="dotDeathsInfo"></span><span> Ölüm: {country.deaths}</span></p>
-                                <p><span className="dotRecoveredInfo"></span><span>İyileşen: {country.recovered}</span></p>
-                                <span>Detay için tıklayınız...</span>
+                                <p><span className="dotCasesInfo"></span><span> {language[this.props.languageCode].cases}: {country.cases}</span></p>
+                                <p><span className="dotDeathsInfo"></span><span> {language[this.props.languageCode].deaths}: {country.deaths}</span></p>
+                                <p><span className="dotRecoveredInfo"></span><span>{language[this.props.languageCode].recovered}: {country.recovered}</span></p>
+                                <span>{language[this.props.languageCode].detailInfo}</span>
                             </div>
                         </div>
                     )) : null}

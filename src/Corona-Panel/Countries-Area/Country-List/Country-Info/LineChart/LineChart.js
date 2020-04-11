@@ -3,6 +3,7 @@ import Chart from 'react-apexcharts';
 import './LineChart.css';
 import countries from '../../../../../Map/coords/centerCountries.json';
 import { Button } from 'react-bootstrap';
+import language from '../../../../../language';
 
 export default class Map extends React.Component {
     constructor(props) {
@@ -106,15 +107,15 @@ export default class Map extends React.Component {
                         }
                         this.setState({
                             series1: [{
-                                name: "Vaka",
+                                name: `${language[this.props.languageCode].cases}`,
                                 data: total,
                             },
                             {
-                                name: "Ölüm",
+                                name: `${language[this.props.languageCode].deaths}`,
                                 data: deaths,
                             },
                             {
-                                name: "İyileşme",
+                                name: `${language[this.props.languageCode].recovered}`,
                                 data: recovered
                             }]
                         })
@@ -131,7 +132,7 @@ export default class Map extends React.Component {
                                     width: 4
                                 },
                                 title: {
-                                    text: `Genel Durum ${this.props.choosen}`,
+                                    text: `${language[this.props.languageCode].generalStatus} ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
                                     offsetY: 20,
@@ -144,7 +145,7 @@ export default class Map extends React.Component {
                         this.setState({
                             series2: [
                                 {
-                                    name: "Ölüm",
+                                    name: `${language[this.props.languageCode].deaths}`,
                                     data: anonDeaths,
                                 }]
                         })
@@ -170,7 +171,7 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: `Günlük Ölüm ${this.props.choosen}`,
+                                    text: `${language[this.props.languageCode].dailyDeaths} ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
                                     offsetY: 20,
@@ -183,7 +184,7 @@ export default class Map extends React.Component {
                         this.setState({
                             series3: [
                                 {
-                                    name: "İyileşen",
+                                    name: `${language[this.props.languageCode].recovered}`,
                                     data: anonRecovered,
                                 }]
                         })
@@ -209,7 +210,7 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: `Günlük İyileşen ${this.props.choosen}`,
+                                    text: `${language[this.props.languageCode].dailyRecovered} ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
                                     offsetY: 20,
@@ -221,7 +222,7 @@ export default class Map extends React.Component {
                         })
                         this.setState({
                             series4: [{
-                                name: "Vaka",
+                                name: `${language[this.props.languageCode].cases}`,
                                 data: anonTotal,
                             }]
                         })
@@ -247,7 +248,7 @@ export default class Map extends React.Component {
                                     }
                                 },
                                 title: {
-                                    text: `Günlük Vaka ${this.props.choosen}`,
+                                    text: `${language[this.props.languageCode].dailyCase} ${this.props.choosen}`,
                                     align: 'left',
                                     offsetX: 20,
                                     offsetY: 20,
@@ -279,7 +280,7 @@ export default class Map extends React.Component {
         let newArray1;
         let newArray2;
         if (purpose === 2) {
-            name = "Vaka";
+            name = `${language[this.props.languageCode].cases}`;
             const total1 = [];
             newArray1 = Object.keys(data1.timeseries);
             newArray1.forEach(e => {
@@ -294,7 +295,7 @@ export default class Map extends React.Component {
             })
             data2Array = total2;
         } else if (purpose === 3) {
-            name = "Ölüm";
+            name = `${language[this.props.languageCode].deaths}`;
             const deaths1 = [];
             newArray1 = Object.keys(data1.timeseries);
             newArray1.forEach(e => {
@@ -308,7 +309,7 @@ export default class Map extends React.Component {
             })
             data2Array = deaths2;
         } else if (purpose === 4) {
-            name = "İyileşen";
+            name = `${language[this.props.languageCode].recovered}`;
             const recovered1 = [];
             newArray1 = Object.keys(data1.timeseries);
             newArray1.forEach(e => {
@@ -345,7 +346,7 @@ export default class Map extends React.Component {
                     width: 4
                 },
                 title: {
-                    text: `Karşılaştırmalı Toplam ${name}, ${data1.countrycode.iso2}- ${data2.countrycode.iso2}`,
+                    text: `${language[this.props.languageCode].comparativeTotal} ${name}, ${data1.countrycode.iso2}- ${data2.countrycode.iso2}`,
                     align: 'left',
                     offsetX: 20,
                     offsetY: 20,
@@ -391,13 +392,13 @@ export default class Map extends React.Component {
                     <div className="dashoardArea">
                         {this.props.graphicId !== 1 ? <div id="compareCountry">
                             <select id="countries" value={this.state.value} onChange={this.handleChange}>
-                                <option value="defaultOpt" disabled="disable">Karşılarştırmak yapmak istediğiniz ülkeyi seçiniz.</option>
+                                <option value="defaultOpt" disabled="disable">{language[this.props.languageCode].selectCompare}</option>
                                 {countries.map(country => (
                                     <option key={country.name} value={country.country_code}>{country.name}</option>
                                 ))}
                             </select>
-                            <Button id="removeCompare" variant="outline-primary" size="xs" onClick={this.removeCompare}>Kaldır</Button>
-                            {this.state.isCompareCountry ? null : <p style={{ color: "red" }}>Seçtiğiniz ülkeye ait veri bulunamadı.</p>}
+                            <Button id="removeCompare" variant="outline-primary" size="xs" onClick={this.removeCompare}>{language[this.props.languageCode].remove}</Button>
+                            {this.state.isCompareCountry ? null : <p style={{ color: "red" }}>{language[this.props.languageCode].noDataSelected}</p>}
                         </div> : null}
                         {this.props.graphicId === 1 && this.state.graphicId !== 5 ? <div id="allIssues">
                             <div className="row">

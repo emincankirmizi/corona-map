@@ -1,5 +1,6 @@
 import React from 'react';
 import './Search-Box.css';
+import language from '../../../language'
 
 export default class SearchBox extends React.Component {
 
@@ -22,7 +23,7 @@ export default class SearchBox extends React.Component {
     render() {
         return (
             <div id="searchBox" className="search-box">
-                <input type="text" placeholder="Ülke adı girin..." maxLength="7" onChange={this.handleChange}></input>
+                <input type="text" placeholder={language[this.props.languageCode].countryName} maxLength="7" onChange={this.handleChange}></input>
             </div>
         )
     }
