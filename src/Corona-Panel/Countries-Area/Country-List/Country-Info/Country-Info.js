@@ -58,7 +58,7 @@ export default class CountryInfo extends React.Component {
                         <div className="column">
                             <p>{language[this.props.languageCode].deaths}: <span id="values">{this.props.choosenCountry.deaths}</span></p>
                             <p>{language[this.props.languageCode].todayDeaths} <span id="values">{this.props.choosenCountry.todayDeaths}</span></p>
-                            <p>{language[this.props.languageCode].todayDeaths} <span id="values">{this.props.choosenCountry.todayCases}</span></p>
+                            <p>{language[this.props.languageCode].todayCases} <span id="values">{this.props.choosenCountry.todayCases}</span></p>
                             <p>{language[this.props.languageCode].deathsPerOneMillion} <span id="values">{this.props.choosenCountry.deathsPerOneMillion ? `${this.props.choosenCountry.deathsPerOneMillion}` : null}</span></p>
                             <p>{language[this.props.languageCode].testsPerOneMillion} <span id="values">{this.props.choosenCountry.testsPerOneMillion ? `${this.props.choosenCountry.testsPerOneMillion}` : null}</span></p>
                         </div>
