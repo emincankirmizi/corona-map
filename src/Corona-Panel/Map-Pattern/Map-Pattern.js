@@ -69,7 +69,7 @@ export default class MapPattern extends React.Component {
                     const country = this.props.totalCountryCorona.find(country => coordOfCountry.properties.name === country.country);
                     if (country) {
                         const countStyle = {
-                            "color": country.cases > 30000 ? '#1a0000' : country.cases > 10000 ? '#660000' : country.cases > 5000 ? '#b30000' : country.cases > 1000 ? '#ff0000' : country.cases > 500 ? '#ff3333' : country.cases > 100 ? '#ff8080' : '#ffcccc',
+                            "color": country.cases > 300000 ? '#1a0000' : country.cases > 100000 ? '#660000' : country.cases > 50000 ? '#b30000' : country.cases > 10000 ? '#ff0000' : country.cases > 5000 ? '#ff3333' : country.cases > 1000 ? '#ff8080' : '#ffcccc',
                             "weight": 0.1,
                             "opacity": 0.55
                         };
